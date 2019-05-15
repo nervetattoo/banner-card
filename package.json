@@ -17,9 +17,11 @@
     "husky": "^2.3.0",
     "prettier": "^1.17.1",
     "pretty-quick": "^1.10.0",
+    "release-it": "^12.1.0",
     "rollup": "^1.7.3",
     "rollup-plugin-node-resolve": "^4.0.1",
-    "rollup-plugin-terser": "^4.0.4"
+    "rollup-plugin-terser": "^4.0.4",
+    "tracker-json": "^1.2.0"
   },
   "husky": {
     "hooks": {
