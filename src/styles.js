@@ -7,6 +7,10 @@ export default css`
     align-items: center;
   }
 
+  ha-card.not-found {
+    background-color: var(--lumo-error-color);
+  }
+
   .heading {
     display: block;
     font-size: 3em;
@@ -14,41 +18,44 @@ export default css`
     cursor: pointer;
     align-self: stretch;
     text-align: center;
-    color: var(--primary-text-color)
+    color: var(--primary-text-color);
   }
 
   .overlay-strip {
-    background: rgba(0, 0, 0, .3);
+    background: rgba(0, 0, 0, 0.3);
     width: 100%;
   }
 
-  .entities {
+  .error {
+    display: flex;
     padding: 16px;
+    color: white;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 1.4rem;
+  }
+  .entities {
+    padding: 8px 0px;
     color: white;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    overflow: auto;
-  }
-
-  .entities.scroll {
-    overflow: -moz-scrollbars-none
-    -ms-overflow-style: none;
-  }
-  .entities.scroll::-webkit-scrollbar {
-    width: 0 !important
+    flex-wrap: wrap;
   }
 
   .entity-state {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0 4px;
-    flex: 1 0 33%;
+    flex: 0 0 33%;
+    margin: 8px 0;
   }
 
   .entity-name {
     font-weight: 700;
+    white-space: nowrap;
   }
 
   .entity-value {
