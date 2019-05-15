@@ -32,6 +32,8 @@ class BannerCard extends LitElement {
   static get properties() {
     return {
       config: Object,
+      entities: Array,
+      error: String,
       _hass: Object
     };
   }
@@ -79,6 +81,7 @@ class BannerCard extends LitElement {
         domain: config.entity.split(".")[0]
       };
 
+      // Will set .value to be the key from entities.*.map_value.{key} that matches the current `state`
       const dynamicData = {};
       if (config.map_state && state.state in config.map_state) {
         dynamicData.value = config.map_state[state.state];
@@ -92,39 +95,36 @@ class BannerCard extends LitElement {
     });
   }
 
+  renderError(error) {
+    return html`
+      <ha-card class="not-found">
+        <h2 class="heading">
+          ${this.config.heading}
+        </h2>
+        <div class="overlay-strip">
+          <div class="error">${error}</div>
+        </div>
+      </ha-card>
+    `;
+  }
+
   render() {
     if (this.error) {
-      return html`
-        <ha-card class="not-found">
-          <h2 class="heading">
-            ${this.config.heading}
-          </h2>
-          <div class="overlay-strip">
-            <div class="error">
-              ${this.error}
-            </div>
-          </div>
-        </ha-card>
-      `;
+      return this.renderError(this.error);
     }
 
     const onClick = () => this.config.link && this.navigate(this.config.link);
-    const numEntities = this.entityValues.length;
     return html`
       <ha-card style="background: ${this.config.background};">
         <h2 class="heading" @click=${onClick}>
           ${this.config.heading}
         </h2>
-        <div class="overlay-strip ${numEntities > 3 ? "scroll" : ""}">
+        <div class="overlay-strip">
           <div class="entities">
             ${this.entityValues.map(
               ({ entity, name, state, value, unit, domain }) => {
                 const onClick = () => this.openEntityPopover(entity);
-                const nameHtml = html`
-                  <span class="entity-name" @click=${onClick}>
-                    ${name}
-                  </span>
-                `;
+                let htmlContent;
 
                 if (domain === "light") {
                   return html`
@@ -144,22 +144,20 @@ class BannerCard extends LitElement {
                     </div>
                   `;
                 } else if (value.match(/^(mdi|hass):/)) {
-                  return html`
-                    <div class="entity-state" @click=${onClick}>
-                      <span class="entity-name">${name}</span>
-                      <span class="entity-value">
-                        <ha-icon icon="${value}"></ha-icon>
-                      </span>
-                    </div>
+                  htmlContent = html`
+                    <ha-icon icon="${value}"></ha-icon>
                   `;
                 } else {
-                  return html`
-                    <div class="entity-state" @click=${onClick}>
-                      <span class="entity-name">${name}</span>
-                      <span class="entity-value">${value} ${unit}</span>
-                    </div>
+                  htmlContent = html`
+                    ${value} ${unit}
                   `;
                 }
+                return html`
+                  <div class="entity-state" @click=${onClick}>
+                    <span class="entity-name">${name}</span>
+                    <span class="entity-value">${htmlContent}</span>
+                  </div>
+                `;
               }
             )}
           </div>
