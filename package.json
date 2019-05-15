@@ -1,0 +1,49 @@
+{
+  "name": "banner-card",
+  "version": "0.1.0",
+  "main": "index.js",
+  "author": "Raymond Julin <raymond.julin@gmail.com>",
+  "description": "A fluffy banner card for Home Assistant",
+  "license": "MIT",
+  "scripts": {
+    "build": "NODE_ENV=production rollup -c",
+    "deploy": "yarn build && cp banner-card.js ../mnt/www/"
+  },
+  "dependencies": {
+    "lit-element": "^2.1.0",
+    "lodash.template": "^4.4.0"
+  },
+  "devDependencies": {
+    "husky": "^2.3.0",
+    "prettier": "^1.17.1",
+    "pretty-quick": "^1.10.0",
+    "rollup": "^1.7.3",
+    "rollup-plugin-node-resolve": "^4.0.1",
+    "rollup-plugin-terser": "^4.0.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "tracker-json": {
+    "banner-card": {
+      "repo": "nervetattoo/banner-card",
+      "file": "banner-card.js",
+      "resolve": "gh:release"
+    }
+  },
+  "release-it": {
+    "github": {
+      "release": true,
+      "assets": [
+        "banner-card.*"
+      ]
+    },
+    "scripts": {
+      "afterBump": "npx tracker-json",
+      "beforeStart": "yarn build",
+      "afterRelease": "rm banner-card.js"
+    }
+  }
+}
