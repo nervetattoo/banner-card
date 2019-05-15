@@ -43,20 +43,24 @@ resources:
 | entities.name | _string_ | Override the automatic usage of friendly_name | `name: A sensor` |
 | entities.map_state | _object_ | Map state values to resulting text or icons. A string prefixed with mdi: or hass: will yield a rendered icon. | `map_state: { home: mdi:home-account, not_home: mdi:walk }` |
 
-## Example configuration
+## Example configuration for results as seen in screenshot
 
 ```yaml
-- type: custom:banner-card
-  heading: "\U0001F6CB Details"
-  background: "#EDE7B0"
-  link: /lovelace/details
-  entities:
-    - light.light_1
-    - entity: person.jane_doe
-    - entity: person.raymond
-      map_state:
-        home: mdi:home-account
-        not_home: mdi:walk
-    - entity: sensor.electricity_price
-      unit: false
+  - type: custom:banner-card
+    background: "#EDE7B0"
+    heading: "\U0001F6CB Living room"
+    link: /lovelace/living_room
+    entities:
+      - light.fibaro_system_fgd212_dimmer_2_level
+      - light.fibaro_system_fgd212_dimmer_2_level_3
+      - sensor.aeotec_zw100_multisensor_6_temperature_6
+      
+  - type: custom:banner-card
+    heading: "\U0001F6C1 Bathroom"
+    background: "#B0C2ED"
+    link: /lovelace/bathroom
+    entities:
+      - light.fibaro_system_fgd212_dimmer_2_level_11
+      - sensor.aeotec_zw100_multisensor_6_temperature_5
+      - sensor.aeotec_zw100_multisensor_6_relative_humidity_5
 ```
