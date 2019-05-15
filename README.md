@@ -2,6 +2,10 @@
 
 A fluffy linkable banner with interactive glances to spice up your home dashboards
 
+
+| ![Example 1](/banner-card-living-room.png) | ![Example 2](/banner-card-bathroom.png) |
+| --------- | --------- |
+
 ## Installation
 
 ### Installation and tracking with `custom updater` _(Recommended)_
