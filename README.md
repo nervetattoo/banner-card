@@ -41,4 +41,22 @@ resources:
 | entities.entity | _string_ | Entity id | `- entity: binary_sensor.remote_ui` |
 | entities.unit | _string_ or _false_ | Override the automatic unit | `unit: My unit` |
 | entities.name | _string_ | Override the automatic usage of friendly_name | `name: A sensor` |
-| entities.map_state | _object_ | Map state values to resulting text or icons. A string prefixed with mdi: or hass: will yield a rendered icon. | `map_state: <br> home: mdi:home-account <br> not_home: mdi:walk<br> ` |
+| entities.map_state | _object_ | Map state values to resulting text or icons. A string prefixed with mdi: or hass: will yield a rendered icon. | `map_state: { home: mdi:home-account, not_home: mdi:walk }` |
+
+## Example configuration
+
+```yaml
+- type: custom:banner-card
+  heading: "\U0001F6CB Details"
+  background: "#EDE7B0"
+  link: /lovelace/details
+  entities:
+    - light.light_1
+    - entity: person.jane_doe
+    - entity: person.raymond
+      map_state:
+        home: mdi:home-account
+        not_home: mdi:walk
+    - entity: sensor.electricity_price
+      unit: false
+```
