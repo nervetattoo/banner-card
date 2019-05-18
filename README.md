@@ -2,9 +2,9 @@
 
 A fluffy linkable banner with interactive glances to spice up your home dashboards
 
-
 | ![Example 1](/banner-card-living-room.png) | ![Example 2](/banner-card-bathroom.png) |
-| --------- | --------- |
+| ------------------------------------------ | --------------------------------------- |
+
 
 ## Installation
 
@@ -36,35 +36,38 @@ resources:
 
 ## Available configuration options:
 
-| Key     | Type     | Description                                | Example                             |
-| ------- | -------- | ------------------------------------------ | ----------------------------------- |
-| heading | _string_ | The heading to display. Remember to escape | `heading: "\U0001F6CB Living room"` |
-| background | _string_ | A valid CSS color to use as the background | `background: "#EDE7B0"`, `background: red` |
-| link | _string_ | A link, to a different view in HA for example | `link: /lovelace/living_room` |
-| entities | _array_ | An array of entities to display for glances. Either as strings or as objects | `entities: [binary_sensor.remote_ui]` |
-| entities.entity | _string_ | Entity id | `- entity: binary_sensor.remote_ui` |
-| entities.unit | _string_ or _false_ | Override the automatic unit | `unit: My unit` |
-| entities.name | _string_ | Override the automatic usage of friendly_name | `name: A sensor` |
-| entities.map_state | _object_ | Map state values to resulting text or icons. A string prefixed with mdi: or hass: will yield a rendered icon. | `map_state: { home: mdi:home-account, not_home: mdi:walk }` |
+| Key                  | Type                | Description                                                                                                   | Example                                                     |
+| -------------------- | ------------------- | ------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| heading              | _string_            | The heading to display. Remember to escape                                                                    | `heading: "\U0001F6CB Living room"`                         |
+| background           | _string_            | A valid CSS color to use as the background                                                                    | `background: "#EDE7B0"`, `background: red`                  |
+| link                 | _string_            | A link, to a different view in HA for example                                                                 | `link: /lovelace/living_room`                               |
+| entities             | _array_             | An array of entities to display for glances. Either as strings or as objects                                  | `entities: [binary_sensor.remote_ui]`                       |
+| entities[].entity    | _string_            | Entity id                                                                                                     | `- entity: binary_sensor.remote_ui`                         |
+| entities[].unit      | _string_ or _false_ | Override the automatic unit                                                                                   | `unit: My unit`                                             |
+| entities[].name      | _string_            | Override the automatic usage of friendly_name                                                                 | `name: A sensor`                                            |
+| entities[].map_state | _object_            | Map state values to resulting text or icons. A string prefixed with mdi: or hass: will yield a rendered icon. | `map_state: { home: mdi:home-account, not_home: mdi:walk }` |
 
 ## Example configuration for results as seen in screenshot
 
 ```yaml
-  - type: custom:banner-card
-    background: "#EDE7B0"
-    heading: "\U0001F6CB Living room"
-    link: /lovelace/living_room
-    entities:
-      - light.fibaro_system_fgd212_dimmer_2_level
-      - light.fibaro_system_fgd212_dimmer_2_level_3
-      - sensor.aeotec_zw100_multisensor_6_temperature_6
-      
-  - type: custom:banner-card
-    heading: "\U0001F6C1 Bathroom"
-    background: "#B0C2ED"
-    link: /lovelace/bathroom
-    entities:
-      - light.fibaro_system_fgd212_dimmer_2_level_11
-      - sensor.aeotec_zw100_multisensor_6_temperature_5
-      - sensor.aeotec_zw100_multisensor_6_relative_humidity_5
+- type: custom:banner-card
+  background: "#EDE7B0"
+  heading: "\U0001F6CB Living room"
+  link: /lovelace/living_room
+  entities:
+    - light.fibaro_system_fgd212_dimmer_2_level
+    - light.fibaro_system_fgd212_dimmer_2_level_3
+    - sensor.aeotec_zw100_multisensor_6_temperature_6
+
+- type: custom:banner-card
+  heading: "\U0001F6C1 Bathroom"
+  background: "#B0C2ED"
+  link: /lovelace/bathroom
+  entities:
+    - entity: light.fibaro_system_fgd212_dimmer_2_level_11
+      name: Light
+    - entity: sensor.aeotec_zw100_multisensor_6_temperature_5
+      name: Temperature
+    - entity: sensor.aeotec_zw100_multisensor_6_relative_humidity_5
+      name: Humidity
 ```

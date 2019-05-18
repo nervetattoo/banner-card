@@ -1,12 +1,9 @@
 import { LitElement, html, css } from "lit-element";
-import template from "loadsh.template";
 import styles from "./styles";
 
 //
 // type: custom:banner
 // heading: 🛋 Living room
-// template: >
-//   {entities[0].friendly_name}
 // background: #999
 // entities:
 //   - entity: light.fibaro_system_fgd212_dimmer_2_level
@@ -55,9 +52,6 @@ class BannerCard extends LitElement {
       throw new Error("You need to define a heading");
     }
 
-    if (config.template) {
-      this.template = template(config.template);
-    }
     this.entities = config.entities.map(parseEntity);
     this.config = config;
   }

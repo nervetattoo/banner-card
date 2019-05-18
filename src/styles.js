@@ -1,6 +1,12 @@
 import { css } from "lit-element";
 
 export default css`
+  :host {
+    --bc-error-color: var(--lumo-error-color);
+    --bc-font-size-heading: 3em;
+    --bc-font-size-entity-value: 1.5em;
+    --bc-spacing: 4px;
+  }
   ha-card {
     display: flex;
     flex-direction: column;
@@ -13,7 +19,7 @@ export default css`
 
   .heading {
     display: block;
-    font-size: 3em;
+    font-size: var(--bc-font-size-heading);
     font-weight: 300;
     cursor: pointer;
     align-self: stretch;
@@ -28,7 +34,7 @@ export default css`
 
   .error {
     display: flex;
-    padding: 16px;
+    padding: calc(var(--bc-spacing) * 4)
     color: white;
     width: 100%;
     justify-content: center;
@@ -37,7 +43,7 @@ export default css`
     font-size: 1.4rem;
   }
   .entities {
-    padding: 8px 0px;
+    padding: calc(var(--bc-spacing) * 2) 0px;
     color: white;
     display: flex;
     flex-direction: row;
@@ -50,7 +56,7 @@ export default css`
     flex-direction: column;
     align-items: center;
     flex: 0 0 33%;
-    margin: 8px 0;
+    margin: calc(var(--bc-spacing) * 2) 0;
   }
 
   .entity-name {
@@ -59,8 +65,8 @@ export default css`
   }
 
   .entity-value {
-    padding-top: 4px;
-    font-size: 1.5rem;
+    padding-top: var(--bc-spacing);
+    font-size: var(--bc-font-size-entity-value);
   }
 
   .toggle {

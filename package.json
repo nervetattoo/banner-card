@@ -9,8 +9,7 @@
     "build": "NODE_ENV=production rollup -c"
   },
   "dependencies": {
-    "lit-element": "^2.1.0",
-    "lodash.template": "^4.4.0"
+    "lit-element": "^2.1.0"
   },
   "devDependencies": {
     "husky": "^2.3.0",
