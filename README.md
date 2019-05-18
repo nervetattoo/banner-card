@@ -30,7 +30,7 @@ resources:
 
 ```yaml
 resources:
-  - url: /local/simple-thermostat.js?v=1
+  - url: /local/banner-card.js?v=1
     type: module
 ```
 
