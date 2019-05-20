@@ -127,7 +127,24 @@ class BannerCard extends LitElement {
                       </span>
                     </div>
                   `;
-                } else if (isIcon(value)) {
+                } else if (domain === "switch") {
+                return html`
+                  <div class="entity-state">
+                    <span class="entity-name" @click=${onClick}>${name}</span>
+                    <span class="entity-value">
+                      <paper-toggle-button
+                        class="toggle"
+                        ?checked=${state === "on"}
+                        @click=${() => {
+                          this._hass.callService("switch", "toggle", {
+                            entity_id: entity
+                          });
+                        }}
+                      />
+                    </span>
+                  </div>
+                `;
+              } else if (isIcon(value)) {
                   htmlContent = html`
                     <ha-icon icon="${value}"></ha-icon>
                   `;
