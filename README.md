@@ -46,6 +46,7 @@ resources:
 | entities[].unit      | _string_ or _false_ | Override the automatic unit                                                                                   | `unit: My unit`                                             |
 | entities[].name      | _string_            | Override the automatic usage of friendly_name                                                                 | `name: A sensor`                                            |
 | entities[].map_state | _object_            | Map state values to resulting text or icons. A string prefixed with mdi: or hass: will yield a rendered icon. | `map_state: { home: mdi:home-account, not_home: mdi:walk }` |
+| entities[].attribute | _string_            | Display an attribute instead of the state                                                                     |                                                             |
 
 ## Example configuration for results as seen in screenshot
 

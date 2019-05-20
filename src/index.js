@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit-element";
 import styles from "./styles";
+import { parseEntity, getAttributeOrState } from "./utils";
 
 //
 // type: custom:banner
@@ -8,21 +9,22 @@ import styles from "./styles";
 // entities:
 //   - entity: light.fibaro_system_fgd212_dimmer_2_level
 
-function mapObject(data, fn) {
-  return Object.entries(data).reduce((result, [key, value]) => {
-    return {
-      ...result,
-      [key]: fn(value, key)
-    };
-  }, {});
+function renderError(heading, error) {
+  return html`
+    <ha-card class="not-found">
+      <h2 class="heading">
+        ${heading}
+      </h2>
+      <div class="overlay-strip">
+        <div class="error">${error}</div>
+      </div>
+    </ha-card>
+  `;
 }
-function parseEntity(entity) {
-  if (typeof entity === "object") {
-    return mapObject(entity, value => {
-      return value === false ? null : value;
-    });
-  }
-  return { entity };
+
+const ICON_REGEXP = /^(mdi|hass):/;
+function isIcon(value) {
+  return typeof value === "string" && value.match(ICON_REGEXP);
 }
 
 class BannerCard extends LitElement {
@@ -67,10 +69,11 @@ class BannerCard extends LitElement {
         return config;
       }
       const state = hass.states[config.entity];
+
       const data = {
         name: state.attributes.friendly_name,
         state: state.state,
-        value: state.state,
+        value: getAttributeOrState(state, config.attribute),
         unit: state.attributes.unit_of_measurement,
         domain: config.entity.split(".")[0]
       };
@@ -89,22 +92,9 @@ class BannerCard extends LitElement {
     });
   }
 
-  renderError(error) {
-    return html`
-      <ha-card class="not-found">
-        <h2 class="heading">
-          ${this.config.heading}
-        </h2>
-        <div class="overlay-strip">
-          <div class="error">${error}</div>
-        </div>
-      </ha-card>
-    `;
-  }
-
   render() {
     if (this.error) {
-      return this.renderError(this.error);
+      return renderError(this.config.heading, this.error);
     }
 
     const onClick = () => this.config.link && this.navigate(this.config.link);
@@ -137,7 +127,7 @@ class BannerCard extends LitElement {
                       </span>
                     </div>
                   `;
-                } else if (value.match(/^(mdi|hass):/)) {
+                } else if (isIcon(value)) {
                   htmlContent = html`
                     <ha-icon icon="${value}"></ha-icon>
                   `;

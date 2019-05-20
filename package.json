@@ -6,12 +6,16 @@
   "description": "A fluffy banner card for Home Assistant",
   "license": "MIT",
   "scripts": {
+    "test": "ava",
     "build": "NODE_ENV=production rollup -c"
   },
   "dependencies": {
     "lit-element": "^2.1.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/register": "^7.4.4",
+    "ava": "^1.4.1",
     "husky": "^2.3.0",
     "prettier": "^1.17.1",
     "pretty-quick": "^1.10.0",
@@ -47,5 +51,15 @@
       "beforeStart": "yarn build",
       "afterRelease": "rm banner-card.js"
     }
+  },
+  "babel": {
+    "presets": [
+      "@ava/stage-4"
+    ]
+  },
+  "ava": {
+    "require": [
+      "@babel/register"
+    ]
   }
 }
