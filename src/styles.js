@@ -5,6 +5,7 @@ export default css`
     --bc-error-color: var(--lumo-error-color);
     --bc-font-size-heading: 3em;
     --bc-font-size-entity-value: 1.5em;
+    --bc-font-size-media-title: 0.9em;
     --bc-spacing: 4px;
   }
   ha-card {
@@ -29,6 +30,7 @@ export default css`
 
   .overlay-strip {
     background: rgba(0, 0, 0, 0.3);
+    overflow: hidden;
     width: 100%;
   }
 
@@ -49,14 +51,41 @@ export default css`
     flex-direction: row;
     justify-content: flex-start;
     flex-wrap: wrap;
+    margin-left: -1px;
   }
 
   .entity-state {
     display: flex;
     flex-direction: column;
     align-items: center;
-    flex: 0 0 33%;
     margin: calc(var(--bc-spacing) * 2) 0;
+    box-shadow: -1px 0px 0 0 white;
+  }
+
+  .media-title {
+    overflow: hidden;
+    font-weight: 300;
+    font-size: var(--bc-font-size-media-title);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .media-controls {
+    flex: 1 0 85px;
+  }
+
+  .entity-state.expand .entity-value {
+    width: 100%;
+  }
+
+  .entity-state-left {
+    margin-right: auto;
+    margin-left: 16px;
+  }
+
+  .entity-state-right {
+    margin-left: auto;
+    margin-right: 16px;
   }
 
   .entity-name {
@@ -67,6 +96,29 @@ export default css`
   .entity-value {
     padding-top: var(--bc-spacing);
     font-size: var(--bc-font-size-entity-value);
+    align-items: center;
+  }
+
+  .entity-value.interactive {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .entity-value.interactive ha-icon {
+    color: white;
+  }
+
+  .entity-value button {
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+  }
+
+  .entity-value button:hover {
+    box-shadow: 1px 1px 1px 1px #0000003d;
   }
 
   .toggle {

@@ -31,8 +31,10 @@ class BannerCard extends LitElement {
   static get properties() {
     return {
       config: Object,
+      gridSizes: Array,
       entities: Array,
       error: String,
+      rowSize: Number,
       _hass: Object
     };
   }
@@ -56,6 +58,19 @@ class BannerCard extends LitElement {
 
     this.entities = config.entities.map(parseEntity);
     this.config = config;
+
+    if (typeof config.row_size !== "undefined") {
+      if (config.row_size < 1) {
+        throw new Error("row_size must be at least 1");
+      }
+      this.rowSize = config.row_size;
+    }
+    this.rowSize = this.rowSize || 3;
+
+    // calculate grid
+    this.gridSizes = Array(this.rowSize)
+      .fill(this.rowSize)
+      .map((size, index) => Math.round(((index + 1) / size) * 100));
   }
 
   set hass(hass) {
@@ -69,12 +84,14 @@ class BannerCard extends LitElement {
         return config;
       }
       const state = hass.states[config.entity];
+      const attributes = state.attributes;
 
       const data = {
-        name: state.attributes.friendly_name,
+        name: attributes.friendly_name,
         state: state.state,
         value: getAttributeOrState(state, config.attribute),
-        unit: state.attributes.unit_of_measurement,
+        unit: attributes.unit_of_measurement,
+        attributes,
         domain: config.entity.split(".")[0]
       };
 
@@ -92,6 +109,15 @@ class BannerCard extends LitElement {
     });
   }
 
+  grid(index = 1) {
+    if (index === "full") {
+      index = this.rowSize;
+    }
+
+    const width = this.gridSizes[index - 1];
+    return `flex: 0 0 ${width}%;`;
+  }
+
   render() {
     if (this.error) {
       return renderError(this.config.heading, this.error);
@@ -105,91 +131,154 @@ class BannerCard extends LitElement {
         </h2>
         <div class="overlay-strip">
           <div class="entities">
-            ${this.entityValues.map(
-              ({ entity, name, state, value, unit, domain }) => {
-                const onClick = () => this.openEntityPopover(entity);
-                let htmlContent;
+            ${this.entityValues.map(config => {
+              const onClick = () => this.openEntityPopover(config.entity);
+              const options = { ...config, onClick };
 
-                if (domain === "light") {
-                  return html`
-                    <div class="entity-state">
-                      <span class="entity-name" @click=${onClick}>${name}</span>
-                      <span class="entity-value">
-                        <paper-toggle-button
-                          class="toggle"
-                          ?checked=${state === "on"}
-                          @click=${() => {
-                            this._hass.callService("light", "toggle", {
-                              entity_id: entity
-                            });
-                          }}
-                        />
-                      </span>
-                    </div>
-                  `;
-                } else if (domain === "switch") {
-                return html`
-                  <div class="entity-state">
-                    <span class="entity-name" @click=${onClick}>${name}</span>
-                    <span class="entity-value">
-                      <paper-toggle-button
-                        class="toggle"
-                        ?checked=${state === "on"}
-                        @click=${() => {
-                          this._hass.callService("switch", "toggle", {
-                            entity_id: entity
-                          });
-                        }}
-                      > </paper-toggle-button>
-                    </span>
-                  </div>
-                `;
-              } else if (domain === "cover") {
-              return html`
-                <div class="entity-state">
-                  <span class="entity-name" @click=${onClick}>${name}</span>
-                  <span class="entity-value">
-                    <paper-icon-button icon="hass:arrow-up" role="button"
-                    @click=${() => {
-                      this._hass.callService("cover", "open_cover", {
-                        entity_id: entity
-                      });
-                    }}></paper-icon-button>
-                    <paper-icon-button icon="hass:stop" role="button"
-                    @click=${() => {
-                      this._hass.callService("cover", "stop_cover", {
-                        entity_id: entity
-                      });
-                    }}></paper-icon-button>
-                    <paper-icon-button icon="hass:arrow-down" role="button"
-                    @click=${() => {
-                      this._hass.callService("cover", "close_cover", {
-                        entity_id: entity
-                      });
-                    }}></paper-icon-button>
-                  </span>
-                </div>
-              `;
-            } else if (isIcon(value)) {
-                  htmlContent = html`
-                    <ha-icon icon="${value}"></ha-icon>
-                  `;
-                } else {
-                  htmlContent = html`
-                    ${value} ${unit}
-                  `;
+              // If an attribute is requested we assume not to render
+              // any domain specifics
+              if (!config.attribute) {
+                switch (config.domain) {
+                  case "light":
+                    return this.renderDomainLight(options);
+                  case "switch":
+                    return this.renderDomainSwitch(options);
+                  case "cover":
+                    return this.renderDomainCover(options);
+                  case "media_player":
+                    return this.renderDomainMediaPlayer(options);
                 }
-                return html`
-                  <div class="entity-state" @click=${onClick}>
-                    <span class="entity-name">${name}</span>
-                    <span class="entity-value">${htmlContent}</span>
-                  </div>
-                `;
               }
-            )}
+              return this.renderDomainDefault(options);
+            })}
           </div>
         </div>
       </ha-card>
+    `;
+  }
+
+  renderDomainDefault({ value, unit, name, size, onClick }) {
+    let htmlContent;
+    if (isIcon(value)) {
+      htmlContent = html`
+        <ha-icon icon="${value}"></ha-icon>
+      `;
+    } else {
+      htmlContent = html`
+        ${value} ${unit}
+      `;
+    }
+    return html`
+      <div class="entity-state" style="${this.grid(size)}" @click=${onClick}>
+        <span class="entity-name">${name}</span>
+        <span class="entity-value">${htmlContent}</span>
+      </div>
+    `;
+  }
+
+  renderDomainMediaPlayer({
+    onClick,
+    attributes: a,
+    size,
+    name,
+    state,
+    entity
+  }) {
+    const isPlaying = state === "playing";
+
+    const action = isPlaying ? "media_pause" : "media_play";
+    const serviceFn = action => {
+      return () =>
+        this._hass.callService("media_player", action, { entity_id: entity });
+    };
+
+    const mediaTitle = [a.media_artist, a.media_title].join(" – ");
+    return html`
+      <div class="entity-state" style="${this.grid(size || "full")}">
+        <span class="entity-name" @click=${onClick}>${name}</span>
+        <span class="entity-value interactive">
+          <div class="entity-state-left media-title">
+            ${mediaTitle}
+          </div>
+          <div class="entity-state-right media-controls">
+            <button type="button" @click=${serviceFn("media_previous_track")}>
+              <ha-icon icon="mdi:skip-previous"></ha-icon>
+            </button>
+            <button type="button" @click=${serviceFn(action)}>
+              <ha-icon icon="${isPlaying ? "mdi:stop" : "mdi:play"}"></ha-icon>
+            </button>
+            <button type="button" @click=${serviceFn("media_next_track")}>
+              <ha-icon icon="mdi:skip-next"></ha-icon>
+            </button>
+          </div>
+        </span>
+      </div>
+    `;
+  }
+
+  renderDomainLight({ onClick, size, name, state, entity }) {
+    return html`
+      <div class="entity-state" style="${this.grid(size)}">
+        <span class="entity-name" @click=${onClick}>${name}</span>
+        <span class="entity-value">
+          <paper-toggle-button
+            class="toggle"
+            ?checked=${state === "on"}
+            @click=${() => {
+              this._hass.callService("light", "toggle", {
+                entity_id: entity
+              });
+            }}
+          />
+        </span>
+      </div>
+    `;
+  }
+
+  renderDomainSwitch ({ onClick, size, name, state, entity }) {
+    return html`
+      <div class="entity-state" style="${this.grid(size)}">
+        <span class="entity-name" @click=${onClick}>${name}</span>
+        <span class="entity-value">
+          <paper-toggle-button
+            class="toggle"
+            ?checked=${state === "on"}
+            @click=${() => {
+              this._hass.callService("switch", "toggle", {
+                entity_id: entity
+              });
+            }}
+          > </paper-toggle-button>
+        </span>
+      </div>
+    `;
+  }
+
+  renderDomainCover ({ onClick, size, name, state, entity}) {
+    return html`
+      <div class="entity-state" style="${this.grid(size)}">
+        <span class="entity-name" @click=${onClick}>${name}</span>
+        <span class="entity-value">
+          <paper-icon-button icon="hass:arrow-up" role="button"
+          @click=${() => {
+            this._hass.callService("cover", "open_cover", {
+              entity_id: entity
+            });
+          }}></paper-icon-button>
+          <paper-icon-button icon="hass:stop" role="button"
+          @click=${() => {
+            this._hass.callService("cover", "stop_cover", {
+              entity_id: entity
+            });
+          }}></paper-icon-button>
+          <paper-icon-button icon="hass:arrow-down" role="button"
+          @click=${() => {
+            this._hass.callService("cover", "close_cover", {
+              entity_id: entity
+            });
+          }}></paper-icon-button>
+        </span>
+      </div>
     `;
   }
 
@@ -203,7 +292,6 @@ class BannerCard extends LitElement {
   }
 
   openEntityPopover(entityId) {
-    console.log("open popover", entityId);
     this.fire("hass-more-info", { entityId });
   }
 
