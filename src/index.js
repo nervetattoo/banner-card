@@ -115,7 +115,13 @@ class BannerCard extends LitElement {
     }
 
     const width = this.gridSizes[index - 1];
-    return `flex: 0 0 ${width}%;`;
+    return `flex: 0 0 ${width}%; width: ${width}%;`;
+  }
+
+  // Factory function to make it a little bit easier to create
+  // click handlers for basic service calls
+  _service(domain, action, entity_id) {
+    return () => this._hass.callService(domain, action, { entity_id });
   }
 
   render() {
@@ -182,36 +188,39 @@ class BannerCard extends LitElement {
     size,
     name,
     state,
-    entity
+    entity,
+    domain
   }) {
     const isPlaying = state === "playing";
 
     const action = isPlaying ? "media_pause" : "media_play";
-    const serviceFn = action => {
-      return () =>
-        this._hass.callService("media_player", action, { entity_id: entity });
-    };
 
     const mediaTitle = [a.media_artist, a.media_title].join(" – ");
     return html`
       <div class="entity-state" style="${this.grid(size || "full")}">
         <span class="entity-name" @click=${onClick}>${name}</span>
-        <span class="entity-value interactive">
+        <div class="entity-value interactive">
           <div class="entity-state-left media-title">
             ${mediaTitle}
           </div>
           <div class="entity-state-right media-controls">
-            <button type="button" @click=${serviceFn("media_previous_track")}>
-              <ha-icon icon="mdi:skip-previous"></ha-icon>
-            </button>
-            <button type="button" @click=${serviceFn(action)}>
-              <ha-icon icon="${isPlaying ? "mdi:stop" : "mdi:play"}"></ha-icon>
-            </button>
-            <button type="button" @click=${serviceFn("media_next_track")}>
-              <ha-icon icon="mdi:skip-next"></ha-icon>
-            </button>
+            <paper-icon-button
+              icon="mdi:skip-previous"
+              role="button"
+              @click=${this._service(domain, "media_previous_track", entity)}
+            ></paper-icon-button>
+            <paper-icon-button
+              icon="${isPlaying ? "mdi:stop" : "mdi:play"}"
+              role="button"
+              @click=${this._service(domain, action, entity)}
+            ></paper-icon-button>
+            <paper-icon-button
+              icon="mdi:skip-next"
+              role="button"
+              @click=${this._service(domain, "media_next_track", entity)}
+            ></paper-icon-button>
           </div>
-        </span>
+        </div>
       </div>
     `;
   }
@@ -224,18 +233,14 @@ class BannerCard extends LitElement {
           <paper-toggle-button
             class="toggle"
             ?checked=${state === "on"}
-            @click=${() => {
-              this._hass.callService("light", "toggle", {
-                entity_id: entity
-              });
-            }}
+            @click=${this._service("light", "toggle", entity)}
           />
         </span>
       </div>
     `;
   }
 
-  renderDomainSwitch ({ onClick, size, name, state, entity }) {
+  renderDomainSwitch({ onClick, size, name, state, entity }) {
     return html`
       <div class="entity-state" style="${this.grid(size)}">
         <span class="entity-name" @click=${onClick}>${name}</span>
@@ -243,40 +248,34 @@ class BannerCard extends LitElement {
           <paper-toggle-button
             class="toggle"
             ?checked=${state === "on"}
-            @click=${() => {
-              this._hass.callService("switch", "toggle", {
-                entity_id: entity
-              });
-            }}
-          > </paper-toggle-button>
+            @click=${this._service("switch", "toggle", entity)}
+          >
+          </paper-toggle-button>
         </span>
       </div>
     `;
   }
 
-  renderDomainCover ({ onClick, size, name, state, entity}) {
+  renderDomainCover({ onClick, size, name, state, entity }) {
     return html`
       <div class="entity-state" style="${this.grid(size)}">
         <span class="entity-name" @click=${onClick}>${name}</span>
         <span class="entity-value">
-          <paper-icon-button icon="hass:arrow-up" role="button"
-          @click=${() => {
-            this._hass.callService("cover", "open_cover", {
-              entity_id: entity
-            });
-          }}></paper-icon-button>
-          <paper-icon-button icon="hass:stop" role="button"
-          @click=${() => {
-            this._hass.callService("cover", "stop_cover", {
-              entity_id: entity
-            });
-          }}></paper-icon-button>
-          <paper-icon-button icon="hass:arrow-down" role="button"
-          @click=${() => {
-            this._hass.callService("cover", "close_cover", {
-              entity_id: entity
-            });
-          }}></paper-icon-button>
+          <paper-icon-button
+            icon="hass:arrow-up"
+            role="button"
+            @click=${this._service("cover", "open_cover", entity)}
+          ></paper-icon-button>
+          <paper-icon-button
+            icon="hass:stop"
+            role="button"
+            @click=${this._service("cover", "stop_cover", entity)}
+          ></paper-icon-button>
+          <paper-icon-button
+            icon="hass:arrow-down"
+            role="button"
+            @click=${this._service("cover", "close_cover", entity)}
+          ></paper-icon-button>
         </span>
       </div>
     `;

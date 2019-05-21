@@ -7,11 +7,18 @@ export default css`
     --bc-font-size-entity-value: 1.5em;
     --bc-font-size-media-title: 0.9em;
     --bc-spacing: 4px;
+    --bc-button-size: 32px;
   }
   ha-card {
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  paper-icon-button {
+    width: var(--bc-button-size);
+    height: var(--bc-button-size);
+    padding: var(--bc-spacing);
   }
 
   ha-card.not-found {
@@ -63,6 +70,7 @@ export default css`
   }
 
   .media-title {
+    flex: 1 0 ;
     overflow: hidden;
     font-weight: 300;
     font-size: var(--bc-font-size-media-title);
@@ -71,7 +79,8 @@ export default css`
   }
 
   .media-controls {
-    flex: 1 0 85px;
+    display: flex;
+    flex: 0 0 calc(var(--bc-button-size) * 3);
   }
 
   .entity-state.expand .entity-value {
@@ -103,22 +112,11 @@ export default css`
     display: flex;
     flex-direction: row;
     justify-content: center;
+    width: 100%;
   }
 
   .entity-value.interactive ha-icon {
     color: white;
-  }
-
-  .entity-value button {
-    cursor: pointer;
-    border: none;
-    background: transparent;
-    padding: 0;
-    margin: 0;
-  }
-
-  .entity-value button:hover {
-    box-shadow: 1px 1px 1px 1px #0000003d;
   }
 
   .toggle {
