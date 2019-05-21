@@ -53,24 +53,26 @@ resources:
 ## Example configuration for results as seen in screenshot
 
 ```yaml
-- type: custom:banner-card
-  background: "#EDE7B0"
-  heading: "\U0001F6CB Living room"
-  link: /lovelace/living_room
-  entities:
-    - light.fibaro_system_fgd212_dimmer_2_level
-    - light.fibaro_system_fgd212_dimmer_2_level_3
-    - sensor.aeotec_zw100_multisensor_6_temperature_6
+type: custom:banner-card
+background: "#EDE7B0"
+heading: "\U0001F6CB Living room"
+link: /lovelace/living_room
+entities:
+  - light.fibaro_system_fgd212_dimmer_2_level
+  - light.fibaro_system_fgd212_dimmer_2_level_3
+  - sensor.aeotec_zw100_multisensor_6_temperature_6
+```
 
-- type: custom:banner-card
-  heading: "\U0001F6C1 Bathroom"
-  background: "#B0C2ED"
-  link: /lovelace/bathroom
-  entities:
-    - entity: light.fibaro_system_fgd212_dimmer_2_level_11
-      name: Light
-    - entity: sensor.aeotec_zw100_multisensor_6_temperature_5
-      name: Temperature
-    - entity: sensor.aeotec_zw100_multisensor_6_relative_humidity_5
-      name: Humidity
+```yaml
+type: custom:banner-card
+heading: "\U0001F6C1 Bathroom"
+background: "#B0C2ED"
+link: /lovelace/bathroom
+entities:
+  - entity: light.fibaro_system_fgd212_dimmer_2_level_11
+    name: Light
+  - entity: sensor.aeotec_zw100_multisensor_6_temperature_5
+    name: Temperature
+  - entity: sensor.aeotec_zw100_multisensor_6_relative_humidity_5
+    name: Humidity
 ```
