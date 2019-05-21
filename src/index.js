@@ -110,7 +110,7 @@ class BannerCard extends LitElement {
   }
 
   grid(index = 1) {
-    if (index === "full") {
+    if (index === "full" || index > this.rowSize) {
       index = this.rowSize;
     }
 
