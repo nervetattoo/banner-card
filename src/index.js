@@ -149,27 +149,24 @@ class BannerCard extends LitElement {
                 <div class="entity-state">
                   <span class="entity-name" @click=${onClick}>${name}</span>
                   <span class="entity-value">
-                    <paper-button
-                      @click=${() => {
-                        this._hass.callService("cover", "close_cover", {
-                          entity_id: entity
-                        });
-                      }}
-                    >down</paper-button>
-                    <paper-button
-                      @click=${() => {
-                        this._hass.callService("cover", "stop_cover", {
-                          entity_id: entity
-                        });
-                      }}
-                    >stop</paper-button>
-                    <paper-button
-                      @click=${() => {
-                        this._hass.callService("cover", "open_cover", {
-                          entity_id: entity
-                        });
-                      }}
-                    >up</paper-button>
+                    <paper-icon-button icon="hass:arrow-up" role="button"
+                    @click=${() => {
+                      this._hass.callService("cover", "open_cover", {
+                        entity_id: entity
+                      });
+                    }}></paper-icon-button>
+                    <paper-icon-button icon="hass:stop" role="button"
+                    @click=${() => {
+                      this._hass.callService("cover", "stop_cover", {
+                        entity_id: entity
+                      });
+                    }}></paper-icon-button>
+                    <paper-icon-button icon="hass:arrow-down" role="button"
+                    @click=${() => {
+                      this._hass.callService("cover", "close_cover", {
+                        entity_id: entity
+                      });
+                    }}></paper-icon-button>
                   </span>
                 </div>
               `;
