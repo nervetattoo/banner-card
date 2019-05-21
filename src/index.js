@@ -127,7 +127,50 @@ class BannerCard extends LitElement {
                       </span>
                     </div>
                   `;
-                } else if (isIcon(value)) {
+                } else if (domain === "switch") {
+                return html`
+                  <div class="entity-state">
+                    <span class="entity-name" @click=${onClick}>${name}</span>
+                    <span class="entity-value">
+                      <paper-toggle-button
+                        class="toggle"
+                        ?checked=${state === "on"}
+                        @click=${() => {
+                          this._hass.callService("switch", "toggle", {
+                            entity_id: entity
+                          });
+                        }}
+                      > </paper-toggle-button>
+                    </span>
+                  </div>
+                `;
+              } else if (domain === "cover") {
+              return html`
+                <div class="entity-state">
+                  <span class="entity-name" @click=${onClick}>${name}</span>
+                  <span class="entity-value">
+                    <paper-icon-button icon="hass:arrow-up" role="button"
+                    @click=${() => {
+                      this._hass.callService("cover", "open_cover", {
+                        entity_id: entity
+                      });
+                    }}></paper-icon-button>
+                    <paper-icon-button icon="hass:stop" role="button"
+                    @click=${() => {
+                      this._hass.callService("cover", "stop_cover", {
+                        entity_id: entity
+                      });
+                    }}></paper-icon-button>
+                    <paper-icon-button icon="hass:arrow-down" role="button"
+                    @click=${() => {
+                      this._hass.callService("cover", "close_cover", {
+                        entity_id: entity
+                      });
+                    }}></paper-icon-button>
+                  </span>
+                </div>
+              `;
+            } else if (isIcon(value)) {
                   htmlContent = html`
                     <ha-icon icon="${value}"></ha-icon>
                   `;
