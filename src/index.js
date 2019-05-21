@@ -140,7 +140,7 @@ class BannerCard extends LitElement {
                             entity_id: entity
                           });
                         }}
-                      />
+                      > </paper-toggle-button>
                     </span>
                   </div>
                 `;
@@ -149,15 +149,27 @@ class BannerCard extends LitElement {
                 <div class="entity-state">
                   <span class="entity-name" @click=${onClick}>${name}</span>
                   <span class="entity-value">
-                    <paper-toggle-button
-                      class="toggle"
-                      ?checked=${state === "closed"}
+                    <paper-button
                       @click=${() => {
-                        this._hass.callService("switch", "toggle", {
+                        this._hass.callService("cover", "close_cover", {
                           entity_id: entity
                         });
                       }}
-                    ></paper-toggle-button>
+                    >down</paper-button>
+                    <paper-button
+                      @click=${() => {
+                        this._hass.callService("cover", "stop_cover", {
+                          entity_id: entity
+                        });
+                      }}
+                    >stop</paper-button>
+                    <paper-button
+                      @click=${() => {
+                        this._hass.callService("cover", "open_cover", {
+                          entity_id: entity
+                        });
+                      }}
+                    >up</paper-button>
                   </span>
                 </div>
               `;
