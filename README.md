@@ -2,9 +2,9 @@
 
 A fluffy linkable banner with interactive glances to spice up your home dashboards
 
-| ![Example 1](/banner-card-living-room.png) | ![Example 2](/banner-card-bathroom.png) |
+| ![Example 1](/screenshots/living-room.png) | ![Example 2](/screenshots/bathroom.png) |
 | ------------------------------------------ | --------------------------------------- |
-
+| ![Example 3](/screenshots/kitchen.png)     | ![Example 2](/screenshots/office.png)   |
 
 ## Installation
 
@@ -50,7 +50,7 @@ resources:
 | entities[].attribute | _string_            | Display an attribute instead of the state                                                                                                                                                                   |                                                             |
 | entities[].size      | _number_            | Override how many "entity cells" this entity will fill. The default for most entities is 1 cell, except if you include a media_player which will use whatever is the value for `row_size`, thus full width. |                                                             |
 
-## Example configuration for results as seen in screenshot
+## Example configurations
 
 ```yaml
 type: custom:banner-card
@@ -61,6 +61,10 @@ entities:
   - light.fibaro_system_fgd212_dimmer_2_level
   - light.fibaro_system_fgd212_dimmer_2_level_3
   - sensor.aeotec_zw100_multisensor_6_temperature_6
+  - entity: sensor.aeotec_zw100_multisensor_6_luminance_6
+    name: Lux
+  - entity: cover.fibaro_system_fgrm222_roller_shutter_controller_2_level
+    name: Roller shutter
 ```
 
 ```yaml

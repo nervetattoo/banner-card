@@ -3,3 +3,4 @@ banner-card.js
 node_modules
 yarn-error.log
 .nvmrc
+.DS_Store
