@@ -34,6 +34,7 @@ class BannerCard extends LitElement {
       config: Object,
       gridSizes: Array,
       entities: Array,
+      entityValues: Array,
       error: String,
       rowSize: Number,
       _hass: Object
@@ -57,7 +58,7 @@ class BannerCard extends LitElement {
       throw new Error("You need to define a heading");
     }
 
-    this.entities = config.entities.map(parseEntity);
+    this.entities = (config.entities || []).map(parseEntity);
     this.config = config;
 
     if (typeof config.row_size !== "undefined") {
@@ -141,31 +142,41 @@ class BannerCard extends LitElement {
         <h2 class="heading" @click=${onClick}>
           ${this.config.heading}
         </h2>
-        <div class="overlay-strip">
-          <div class="entities">
-            ${this.entityValues.map(config => {
-              const onClick = () => this.openEntityPopover(config.entity);
-              const options = { ...config, onClick };
-
-              // If an attribute is requested we assume not to render
-              // any domain specifics
-              if (!config.attribute) {
-                switch (config.domain) {
-                  case "light":
-                    return this.renderDomainLight(options);
-                  case "switch":
-                    return this.renderDomainSwitch(options);
-                  case "cover":
-                    return this.renderDomainCover(options);
-                  case "media_player":
-                    return this.renderDomainMediaPlayer(options);
-                }
-              }
-              return this.renderDomainDefault(options);
-            })}
-          </div>
-        </div>
+        ${this.renderEntities()}
       </ha-card>
+    `;
+  }
+
+  renderEntities() {
+    if (this.entityValues.length === 0) {
+      return null;
+    }
+
+    return html`
+      <div class="overlay-strip">
+        <div class="entities">
+          ${this.entityValues.map(config => {
+            const onClick = () => this.openEntityPopover(config.entity);
+            const options = { ...config, onClick };
+
+            // If an attribute is requested we assume not to render
+            // any domain specifics
+            if (!config.attribute) {
+              switch (config.domain) {
+                case "light":
+                  return this.renderDomainLight(options);
+                case "switch":
+                  return this.renderDomainSwitch(options);
+                case "cover":
+                  return this.renderDomainCover(options);
+                case "media_player":
+                  return this.renderDomainMediaPlayer(options);
+              }
+            }
+            return this.renderDomainDefault(options);
+          })}
+        </div>
+      </div>
     `;
   }
 
