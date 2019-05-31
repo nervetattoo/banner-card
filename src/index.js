@@ -257,11 +257,13 @@ class BannerCard extends LitElement {
   }
 
   renderDomainCover({ onClick, size, name, state, entity }) {
+    const isclosed = state === "closed";
     return html`
       <div class="entity-state" style="${this.grid(size)}">
         <span class="entity-name" @click=${onClick}>${name}</span>
         <span class="entity-value">
           <paper-icon-button
+            ?disabled=${!isclosed}
             icon="hass:arrow-up"
             role="button"
             @click=${this._service("cover", "open_cover", entity)}
@@ -272,6 +274,7 @@ class BannerCard extends LitElement {
             @click=${this._service("cover", "stop_cover", entity)}
           ></paper-icon-button>
           <paper-icon-button
+            ?disabled=${isclosed}
             icon="hass:arrow-down"
             role="button"
             @click=${this._service("cover", "close_cover", entity)}
