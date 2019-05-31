@@ -180,11 +180,15 @@ class BannerCard extends LitElement {
     `;
   }
 
-  renderDomainDefault({ value, unit, name, size, onClick }) {
+  renderDomainDefault({ value, unit, image, name, size, onClick }) {
     let htmlContent;
     if (isIcon(value)) {
       htmlContent = html`
         <ha-icon icon="${value}"></ha-icon>
+      `;
+    } else if (image === true) {
+      htmlContent = html`
+        <state-badge style="background-image: url(${value});"></state-badge>
       `;
     } else {
       htmlContent = html`
@@ -216,7 +220,7 @@ class BannerCard extends LitElement {
     return html`
       <div class="entity-state" style="${this.grid(size || "full")}">
         <span class="entity-name" @click=${onClick}>${name}</span>
-        <div class="entity-value interactive">
+        <div class="entity-value">
           <div class="entity-state-left media-title">
             ${mediaTitle}
           </div>

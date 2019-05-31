@@ -103,19 +103,16 @@ export default css`
   }
 
   .entity-value {
+    display: flex;
+    width: 100%;
+    flex: 1 0;
     padding-top: var(--bc-spacing);
     font-size: var(--bc-font-size-entity-value);
     align-items: center;
-  }
-
-  .entity-value.interactive {
-    display: flex;
-    flex-direction: row;
     justify-content: center;
-    width: 100%;
   }
 
-  .entity-value.interactive ha-icon {
+  .entity-value ha-icon {
     color: white;
   }
 
