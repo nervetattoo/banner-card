@@ -126,4 +126,9 @@ export default css`
     --paper-toggle-button-checked-button-color: white;
     --paper-toggle-button-checked-ink-color: white;
   }
+
+  mwc-button {
+    --mdc-theme-primary: white;
+  }
+
 `;

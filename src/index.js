@@ -159,6 +159,21 @@ class BannerCard extends LitElement {
             const onClick = () => this.openEntityPopover(config.entity);
             const options = { ...config, onClick };
 
+            // Allow overriding rendering + action if custom is set to true
+            if (config.action) {
+              return this.renderCustom({
+                ...options,
+                action: () => {
+                  const { service, ...serviceData } = config.action;
+                  const [domain, action] = service.split(".");
+                  this._hass.callService(domain, action, {
+                    entity_id: config.entity,
+                    ...serviceData
+                  });
+                }
+              });
+            }
+
             // If an attribute is requested we assume not to render
             // any domain specifics
             if (!config.attribute) {
@@ -180,11 +195,11 @@ class BannerCard extends LitElement {
     `;
   }
 
-  renderDomainDefault({ value, unit, image, name, size, onClick }) {
+  renderDomainDefault({ value, unit, image, icon, name, size, onClick }) {
     let htmlContent;
-    if (isIcon(value)) {
+    if (icon || isIcon(value)) {
       htmlContent = html`
-        <ha-icon icon="${value}"></ha-icon>
+        <ha-icon icon="${icon || value}"></ha-icon>
       `;
     } else if (image === true) {
       htmlContent = html`
@@ -198,6 +213,36 @@ class BannerCard extends LitElement {
     return html`
       <div class="entity-state" style="${this.grid(size)}" @click=${onClick}>
         <span class="entity-name">${name}</span>
+        <span class="entity-value">${htmlContent}</span>
+      </div>
+    `;
+  }
+
+  renderCustom({ value, unit, action, image, icon, name, size, onClick }) {
+    let htmlContent;
+    if (icon || isIcon(value)) {
+      htmlContent = html`
+        <paper-icon-button
+          icon="${icon || value}"
+          role="button"
+          @click=${action}
+        ></paper-icon-button>
+      `;
+    } else if (image === true) {
+      htmlContent = html`
+        <state-badge @click=${action} style="background-image: url(${value});">
+        </state-badge>
+      `;
+    } else {
+      htmlContent = html`
+        <mwc-button ?dense=${true} @click=${action}>
+          ${value} ${unit}
+        </mwc-button>
+      `;
+    }
+    return html`
+      <div class="entity-state" style="${this.grid(size)}">
+        <span class="entity-name" @click=${onClick}>${name}</span>
         <span class="entity-value">${htmlContent}</span>
       </div>
     `;

@@ -49,8 +49,9 @@ resources:
 | entities[].map_state | _object_             | Map state values to resulting text or icons. A string prefixed with mdi: or hass: will yield a rendered icon.                                                                                               | map_state:<br /> home: mdi:home-account<br /> not_home: mdi:walk                      |
 | entities[].attribute | _string_             | Display an attribute instead of the state                                                                                                                                                                   |                                                                                       |
 | entities[].size      | _number_             | Override how many "entity cells" this entity will fill. The default for most entities is 1 cell, except if you include a media_player which will use whatever is the value for `row_size`, thus full width. |                                                                                       |
-| entities[].when      | _string_ or _object_ | Only display this entity when these tests pass                                                                                                                                                              | See following section                                                                 |
+| entities[].when      | _string_ or _object_ | Only display this entity when these tests pass                                                                                                                                                              | See separate section                                                                  |
 | entities[].image     | _bool_               | Force display the value as a rounded image                                                                                                                                                                  | Will use the provided value as a background for the `<state-badge>` component from HA |
+| entities[].action    | _object_             | Specify a service to be called on tap. Will result in either an icon (if a valid icon is set as value with map_state) or a button with the state value as text                                              | See separate section                                                                  |
 
 ## Using when
 
@@ -83,6 +84,19 @@ The last example shows how passing a simple string/number will imply an equality
 | !=       | **Not equal** check that is exactly like the equal check, just negated (opposite results)                                                                                                             | `fan_mode: ['!=', 'On Low', 'Auto Low']` |
 | >        | **Bigger than** checks if real value is bigger than what is set. Does not support multiple values                                                                                                     | `brightness: ['>', 50]`                  |
 | <        | **Smaller than** checks if real value is smaller than what is set. Does not support multiple values                                                                                                   | `brightness: ['<', 50]`                  |
+
+## Using entity action
+
+You can add **simple** buttons by specifying the action property for an entity. This is intended for simple use cases to start scripts or set a light to specific brightness for example. You can enforce a fixed icon using a crazy hack (and there I made it a feature) that sets an entities value via config. (Its normaly read from state). You can also use `map_state` to use different icons for different states.
+
+```yaml
+entity: light.my_light
+name: Reading light
+value: mdi:book-open-page-variant
+action:
+  service: light.turn_on
+  brightness: 50
+```
 
 ## CSS vars for theming
 
