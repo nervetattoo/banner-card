@@ -84,6 +84,19 @@ The last example shows how passing a simple string/number will imply an equality
 | >        | **Bigger than** checks if real value is bigger than what is set. Does not support multiple values                                                                                                     | `brightness: ['>', 50]`                  |
 | <        | **Smaller than** checks if real value is smaller than what is set. Does not support multiple values                                                                                                   | `brightness: ['<', 50]`                  |
 
+## CSS vars for theming
+
+The card uses the following CSS variables:
+
+| Var name                    | Default value           | Usage                                                    |
+| --------------------------- | ----------------------- | -------------------------------------------------------- |
+| --bc-error-color            | var(--lumo-error-color) | Background color when there's an error crashing the card |
+| --bc-font-size-heading      | 3em                     | The main heading of the card                             |
+| --bc-font-size-entity-value | 1.5em                   | Entity value font size                                   |
+| --bc-font-size-media-title  | 0.9em                   | Media player fonts title font size                       |
+| --bc-button-size            | 32px                    | Size of buttons                                          |
+| --bc-spacing                | 4px                     | Base unit for spacing. Used in multiples many places     |
+
 ## Example configurations
 
 ```yaml
