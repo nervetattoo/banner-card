@@ -54,7 +54,7 @@ class BannerCard extends LitElement {
   }
 
   setConfig(config) {
-    if (!config.heading) {
+    if (typeof config.heading === "undefined") {
       throw new Error("You need to define a heading");
     }
 
@@ -136,14 +136,23 @@ class BannerCard extends LitElement {
       return renderError(this.config.heading, this.error);
     }
 
-    const onClick = () => this.config.link && this.navigate(this.config.link);
     return html`
       <ha-card style="background: ${this.config.background};">
-        <h2 class="heading" @click=${onClick}>
-          ${this.config.heading}
-        </h2>
-        ${this.renderEntities()}
+        ${this.renderHeading()} ${this.renderEntities()}
       </ha-card>
+    `;
+  }
+
+  renderHeading() {
+    if (this.config.heading === false) {
+      return null;
+    }
+
+    const onClick = () => this.config.link && this.navigate(this.config.link);
+    return html`
+      <h2 class="heading" @click=${onClick}>
+        ${this.config.heading}
+      </h2>
     `;
   }
 
