@@ -1,6 +1,7 @@
 import { LitElement, html, css } from "lit-element";
 import styles from "./styles";
 import { parseEntity, getAttributeOrState } from "./utils";
+import filterEntity from "./filterEntity";
 
 //
 // type: custom:banner
@@ -75,38 +76,43 @@ class BannerCard extends LitElement {
 
   set hass(hass) {
     this._hass = hass;
-    // Parse
-    // Pluck new state values for _entities_
     this.error = null;
-    this.entityValues = this.entities.map(config => {
-      if (!hass.states.hasOwnProperty(config.entity)) {
-        this.error = `Can't find entity ${config.entity}`;
-        return config;
-      }
-      const state = hass.states[config.entity];
-      const attributes = state.attributes;
 
-      const data = {
-        name: attributes.friendly_name,
-        state: state.state,
-        value: getAttributeOrState(state, config.attribute),
-        unit: attributes.unit_of_measurement,
-        attributes,
-        domain: config.entity.split(".")[0]
-      };
+    // Parse new state values for _entities_
+    this.entityValues = this.entities
+      .filter(conf => filterEntity(conf, hass.states))
+      .map(conf => this.parseEntity(conf));
+  }
 
-      // Will set .value to be the key from entities.*.map_value.{key} that matches the current `state`
-      const dynamicData = {};
-      if (config.map_state && state.state in config.map_state) {
-        dynamicData.value = config.map_state[state.state];
-      }
+  parseEntity(config) {
+    const hass = this._hass;
+    if (!hass.states.hasOwnProperty(config.entity)) {
+      this.error = `Can't find entity ${config.entity}`;
+      return config;
+    }
+    const state = hass.states[config.entity];
+    const attributes = state.attributes;
 
-      return {
-        ...data,
-        ...config,
-        ...dynamicData
-      };
-    });
+    const data = {
+      name: attributes.friendly_name,
+      state: state.state,
+      value: getAttributeOrState(state, config.attribute),
+      unit: attributes.unit_of_measurement,
+      attributes,
+      domain: config.entity.split(".")[0]
+    };
+
+    // Will set .value to be the key from entities.*.map_value.{key} that matches the current `state`
+    const dynamicData = {};
+    if (config.map_state && state.state in config.map_state) {
+      dynamicData.value = config.map_state[state.state];
+    }
+
+    return {
+      ...data,
+      ...config,
+      ...dynamicData
+    };
   }
 
   grid(index = 1) {
