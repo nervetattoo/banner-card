@@ -36,19 +36,52 @@ resources:
 
 ## Available configuration options:
 
-| Key                  | Type                | Description                                                  | Example                                                      |
-| -------------------- | ------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| heading              | _string_            | The heading to display. Remember to escape                   | `heading: "\U0001F6CB Living room"`                          |
-| background           | _string_            | A valid CSS color to use as the background                   | `background: "#EDE7B0"`, `background: red`                   |
-| link                 | _string_            | A link, to a different view in HA for example                | `link: /lovelace/living_room`                                |
-| entities             | _array_             | An array of entities to display for glances. Either as strings or as objects | `entities: [binary_sensor.remote_ui]`                        |
-| row_size             | _number_            | Configure number of "entity cells" in the grid before it wraps to a new line. 3 is the default and what looks best _in most cases_ | `row_size: 4`                                                |
-| entities[].entity    | _string_            | Entity id                                                    | `- entity: binary_sensor.remote_ui`                          |
-| entities[].unit      | _string_ or _false_ | Override the automatic unit                                  | `unit: My unit`                                              |
-| entities[].name      | _string_            | Override the automatic usage of friendly_name                | `name: A sensor`                                             |
-| entities[].map_state | _object_            | Map state values to resulting text or icons. A string prefixed with mdi: or hass: will yield a rendered icon. | map_state:<br />  home: mdi:home-account<br />  not_home: mdi:walk |
-| entities[].attribute | _string_            | Display an attribute instead of the state                    |                                                              |
-| entities[].size      | _number_            | Override how many "entity cells" this entity will fill. The default for most entities is 1 cell, except if you include a media_player which will use whatever is the value for `row_size`, thus full width. |                                                              |
+| Key                  | Type                 | Description                                                                                                                                                                                                 | Example                                                          |
+| -------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| heading              | _string_             | The heading to display. Remember to escape                                                                                                                                                                  | `heading: "\U0001F6CB Living room"`                              |
+| background           | _string_             | A valid CSS color to use as the background                                                                                                                                                                  | `background: "#EDE7B0"`, `background: red`                       |
+| link                 | _string_             | A link, to a different view in HA for example                                                                                                                                                               | `link: /lovelace/living_room`                                    |
+| entities             | _array_              | An array of entities to display for glances. Either as strings or as objects                                                                                                                                | `entities: [binary_sensor.remote_ui]`                            |
+| row_size             | _number_             | Configure number of "entity cells" in the grid before it wraps to a new line. 3 is the default and what looks best _in most cases_                                                                          | `row_size: 4`                                                    |
+| entities[].entity    | _string_             | Entity id                                                                                                                                                                                                   | `- entity: binary_sensor.remote_ui`                              |
+| entities[].unit      | _string_ or _false_  | Override the automatic unit                                                                                                                                                                                 | `unit: My unit`                                                  |
+| entities[].name      | _string_             | Override the automatic usage of friendly_name                                                                                                                                                               | `name: A sensor`                                                 |
+| entities[].map_state | _object_             | Map state values to resulting text or icons. A string prefixed with mdi: or hass: will yield a rendered icon.                                                                                               | map_state:<br /> home: mdi:home-account<br /> not_home: mdi:walk |
+| entities[].attribute | _string_             | Display an attribute instead of the state                                                                                                                                                                   |                                                                  |
+| entities[].size      | _number_             | Override how many "entity cells" this entity will fill. The default for most entities is 1 cell, except if you include a media_player which will use whatever is the value for `row_size`, thus full width. |                                                                  |
+| entities[].when      | _string_ or _object_ | Only display this entity when these tests pass                                                                                                                                                              | See following section                                            |
+
+## Using when
+
+You can filter entities with a simple but powerful `when` object. This allows you to filter based on state and/or attributes. It is probably simpliest explained through a few examples
+
+This limits to only showing a media_player entity when it is playing. It uses the shorthand form for `when` where a simple string is used instead of specifying an object with state key.
+
+```yaml
+entity: media_player.office
+when: playing
+```
+
+This example limits to only showing a light entity when its on and above a certain brightness
+
+```yaml
+entity: light.my_light
+when:
+  state: "on"
+  attributes:
+    brightness: [">", 50]
+```
+
+The last example shows how passing a simple string/number will imply an equality operator check, whereas you can configure using an array to using different operators. The following operators exist:
+
+### When operators
+
+| Operator | Description                                                                                                                                                                                           | Example                                  |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
+| `=`      | **Equal** check to either match a string/number/boolean input, or if given an array, check that the real value exists inside said array. This is the default operator used when a simple value is set | `state: ['=', 'on', 'off']`              |
+| !=       | **Not equal** check that is exactly like the equal check, just negated (opposite results)                                                                                                             | `fan_mode: ['!=', 'On Low', 'Auto Low']` |
+| >        | **Bigger than** checks if real value is bigger than what is set. Does not support multiple values                                                                                                     | `brightness: ['>', 50]`                  |
+| <        | **Smaller than** checks if real value is smaller than what is set. Does not support multiple values                                                                                                   | `brightness: ['<', 50]`                  |
 
 ## Example configurations
 
