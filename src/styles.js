@@ -8,6 +8,8 @@ export default css`
     --bc-font-size-media-title: 0.9em;
     --bc-spacing: 4px;
     --bc-button-size: 32px;
+    --bc-heading-color-dark: var(--primary-text-color);
+    --bc-heading-color-light: #fff;
   }
   ha-card {
     display: flex;
@@ -32,7 +34,6 @@ export default css`
     cursor: pointer;
     align-self: stretch;
     text-align: center;
-    color: var(--primary-text-color);
   }
 
   .overlay-strip {

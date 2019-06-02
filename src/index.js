@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "lit-element";
 import styles from "./styles";
-import { parseEntity, getAttributeOrState } from "./utils";
+import { parseEntity, getAttributeOrState, readableColor } from "./utils";
 import filterEntity from "./filterEntity";
 
 //
@@ -148,9 +148,15 @@ class BannerCard extends LitElement {
       return null;
     }
 
+    const color = readableColor(
+      this.config.background,
+      "var(--bc-heading-color-light)",
+      "var(--bc-heading-color-dark)"
+    );
+
     const onClick = () => this.config.link && this.navigate(this.config.link);
     return html`
-      <h2 class="heading" @click=${onClick}>
+      <h2 class="heading" style="color: ${color};" @click=${onClick}>
         ${this.config.heading}
       </h2>
     `;
