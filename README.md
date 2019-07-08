@@ -23,6 +23,7 @@ resources:
 | Key                  | Type                 | Description                                                                                                                                                                                                 | Example                                                                               |
 | -------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
 | heading              | _string_             | The heading to display. Remember to escape                                                                                                                                                                  | `heading: "\U0001F6CB Living room"`                                                   |
+| headingIcon          | _string_             | The heading icon to display before the heading title.                                                                                                                                                       | `headingIcon: "mdi:monitor"`                                                          |
 | background           | _string_             | A valid CSS color to use as the background                                                                                                                                                                  | `background: "#EDE7B0"`, `background: red`                                            |
 | link                 | _string_             | A link, to a different view in HA for example                                                                                                                                                               | `link: /lovelace/living_room`                                                         |
 | entities             | _array_              | An array of entities to display for glances. Either as strings or as objects                                                                                                                                | `entities: [binary_sensor.remote_ui]`                                                 |
@@ -94,6 +95,7 @@ The card uses the following CSS variables:
 | --bc-font-size-media-title  | 0.9em                   | Media player fonts title font size                       |
 | --bc-button-size            | 32px                    | Size of buttons                                          |
 | --bc-spacing                | 4px                     | Base unit for spacing. Used in multiples many places     |
+| --bc-heading-icon-size      | 42px                    | Size of the heading icons.                               |
 
 ## Example configurations
 

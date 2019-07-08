@@ -155,9 +155,22 @@ class BannerCard extends LitElement {
     );
 
     const onClick = () => this.config.link && this.navigate(this.config.link);
+
+    let htmlContent;
+    if (this.config.headingIcon && isIcon(this.config.headingIcon)) {
+      htmlContent = html`
+        <ha-icon icon="${this.config.headingIcon}"></ha-icon>
+        &nbsp;${this.config.heading}
+      `;
+    } else {
+      htmlContent = html`
+        ${this.config.heading}
+      `;
+    }
+
     return html`
       <h2 class="heading" style="color: ${color};" @click=${onClick}>
-        ${this.config.heading}
+        ${htmlContent}
       </h2>
     `;
   }
