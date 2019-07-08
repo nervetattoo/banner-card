@@ -260,6 +260,7 @@ class BannerCard extends LitElement {
     if (icon || isIcon(value)) {
       htmlContent = html`
         <state-badge
+          @click=${action}
           .stateObj="${stateObj}"
           .overrideIcon="${icon || value}"
         ></state-badge>

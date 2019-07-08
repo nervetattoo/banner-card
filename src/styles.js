@@ -129,4 +129,8 @@ export default css`
     --mdc-theme-primary: white;
   }
 
+  state-badge:hover {
+    cursor: pointer;
+  }
+
 `;
