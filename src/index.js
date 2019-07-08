@@ -96,7 +96,7 @@ class BannerCard extends LitElement {
 
     const data = {
       name: attributes.friendly_name,
-      state: state.state,
+      stateObj: state,
       value: getAttributeOrState(state, config.attribute),
       unit: attributes.unit_of_measurement,
       attributes,
@@ -210,11 +210,23 @@ class BannerCard extends LitElement {
     `;
   }
 
-  renderDomainDefault({ value, unit, image, icon, name, size, onClick }) {
+  renderDomainDefault({
+    value,
+    unit,
+    image,
+    icon,
+    name,
+    stateObj,
+    size,
+    onClick
+  }) {
     let htmlContent;
     if (icon || isIcon(value)) {
       htmlContent = html`
-        <ha-icon icon="${icon || value}"></ha-icon>
+        <state-badge
+          .stateObj="${stateObj}"
+          .overrideIcon="${icon || value}"
+        ></state-badge>
       `;
     } else if (image === true) {
       htmlContent = html`
@@ -233,15 +245,24 @@ class BannerCard extends LitElement {
     `;
   }
 
-  renderCustom({ value, unit, action, image, icon, name, size, onClick }) {
+  renderCustom({
+    value,
+    unit,
+    action,
+    image,
+    icon,
+    name,
+    stateObj,
+    size,
+    onClick
+  }) {
     let htmlContent;
     if (icon || isIcon(value)) {
       htmlContent = html`
-        <paper-icon-button
-          icon="${icon || value}"
-          role="button"
-          @click=${action}
-        ></paper-icon-button>
+        <state-badge
+          .stateObj="${stateObj}"
+          .overrideIcon="${icon || value}"
+        ></state-badge>
       `;
     } else if (image === true) {
       htmlContent = html`
@@ -268,11 +289,11 @@ class BannerCard extends LitElement {
     attributes: a,
     size,
     name,
-    state,
+    stateObj,
     entity,
     domain
   }) {
-    const isPlaying = state === "playing";
+    const isPlaying = stateObj.state === "playing";
 
     const action = isPlaying ? "media_pause" : "media_play";
 
@@ -306,14 +327,14 @@ class BannerCard extends LitElement {
     `;
   }
 
-  renderDomainLight({ onClick, size, name, state, entity }) {
+  renderDomainLight({ onClick, size, name, stateObj, entity }) {
     return html`
       <div class="entity-state" style="${this.grid(size)}">
         <span class="entity-name" @click=${onClick}>${name}</span>
         <span class="entity-value">
           <paper-toggle-button
             class="toggle"
-            ?checked=${state === "on"}
+            ?checked=${stateObj.state === "on"}
             @click=${this._service("light", "toggle", entity)}
           />
         </span>
@@ -321,14 +342,14 @@ class BannerCard extends LitElement {
     `;
   }
 
-  renderDomainSwitch({ onClick, size, name, state, entity }) {
+  renderDomainSwitch({ onClick, size, name, stateObj, entity }) {
     return html`
       <div class="entity-state" style="${this.grid(size)}">
         <span class="entity-name" @click=${onClick}>${name}</span>
         <span class="entity-value">
           <paper-toggle-button
             class="toggle"
-            ?checked=${state === "on"}
+            ?checked=${stateObj.state === "on"}
             @click=${this._service("switch", "toggle", entity)}
           >
           </paper-toggle-button>
@@ -337,8 +358,8 @@ class BannerCard extends LitElement {
     `;
   }
 
-  renderDomainCover({ onClick, size, name, state, entity }) {
-    const isclosed = state === "closed";
+  renderDomainCover({ onClick, size, name, stateObj, entity }) {
+    const isclosed = stateObj.state === "closed";
     return html`
       <div class="entity-state" style="${this.grid(size)}">
         <span class="entity-name" @click=${onClick}>${name}</span>

@@ -10,6 +10,7 @@ export default css`
     --bc-button-size: 32px;
     --bc-heading-color-dark: var(--primary-text-color);
     --bc-heading-color-light: #fff;
+    --paper-item-icon-color: var(--bc-heading-color-light);
   }
   ha-card {
     display: flex;
@@ -111,10 +112,6 @@ export default css`
     font-size: var(--bc-font-size-entity-value);
     align-items: center;
     justify-content: center;
-  }
-
-  .entity-value ha-icon {
-    color: white;
   }
 
   .toggle {
