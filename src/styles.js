@@ -10,7 +10,9 @@ export default css`
     --bc-button-size: 32px;
     --bc-heading-color-dark: var(--primary-text-color);
     --bc-heading-color-light: #fff;
+    --bc-heading-icon-size: 42px;
   }
+
   ha-card {
     display: flex;
     flex-direction: column;
@@ -34,6 +36,11 @@ export default css`
     cursor: pointer;
     align-self: stretch;
     text-align: center;
+  }
+
+  .heading ha-icon {
+    width: var(--bc-heading-icon-size);
+    height: var(--bc-heading-icon-size);
   }
 
   .overlay-strip {
