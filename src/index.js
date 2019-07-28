@@ -72,7 +72,7 @@ class BannerCard extends LitElement {
     // calculate grid
     this.gridSizes = Array(this.rowSize)
       .fill(this.rowSize)
-      .map((size, index) => Math.round(((index + 1) / size) * 100));
+      .map((size, index) => Math.round((1 / size) * 100) * (index + 1));
   }
 
   set hass(hass) {
