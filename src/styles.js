@@ -10,6 +10,7 @@ export default css`
     --bc-button-size: 32px;
     --bc-heading-color-dark: var(--primary-text-color);
     --bc-heading-color-light: #fff;
+    --paper-item-icon-color: var(--bc-heading-color-light);
   }
   ha-card {
     display: flex;
@@ -113,10 +114,6 @@ export default css`
     justify-content: center;
   }
 
-  .entity-value ha-icon {
-    color: white;
-  }
-
   .toggle {
     cursor: pointer;
     --paper-toggle-button-unchecked-bar-color: rgba(255, 255, 255, 0.4);
@@ -130,6 +127,10 @@ export default css`
 
   mwc-button {
     --mdc-theme-primary: white;
+  }
+
+  state-badge:hover {
+    cursor: pointer;
   }
 
 `;
