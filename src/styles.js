@@ -2,14 +2,14 @@ import { css } from "lit-element";
 
 export default css`
   :host {
-    --bc-error-color: var(--lumo-error-color);
-    --bc-font-size-heading: 3em;
-    --bc-font-size-entity-value: 1.5em;
-    --bc-font-size-media-title: 0.9em;
-    --bc-spacing: 4px;
-    --bc-button-size: 32px;
-    --bc-heading-color-dark: var(--primary-text-color);
-    --bc-heading-color-light: #fff;
+    --bc-error-color: var(--banner-card-error-color, var(--lumo-error-color));
+    --bc-font-size-heading: var(--banner-card-heading-size, 3em);
+    --bc-font-size-entity-value: var(--banner-card-entity-value-size, 1.5em);
+    --bc-font-size-media-title: var(--banner-card-media-title-size, 0.9em);
+    --bc-spacing: var(--banner-card-spacing, 4px);
+    --bc-button-size: var(--banner-card-button-size, 32px);
+    --bc-heading-color-dark: var(--banner-card-heading-color-dark, var(--primary-text-color));
+    --bc-heading-color-light: var(--banner-card-heading-color-light, #fff);
   }
   ha-card {
     display: flex;

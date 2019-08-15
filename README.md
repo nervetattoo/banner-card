@@ -86,14 +86,16 @@ action:
 
 The card uses the following CSS variables:
 
-| Var name                    | Default value           | Usage                                                    |
-| --------------------------- | ----------------------- | -------------------------------------------------------- |
-| --bc-error-color            | var(--lumo-error-color) | Background color when there's an error crashing the card |
-| --bc-font-size-heading      | 3em                     | The main heading of the card                             |
-| --bc-font-size-entity-value | 1.5em                   | Entity value font size                                   |
-| --bc-font-size-media-title  | 0.9em                   | Media player fonts title font size                       |
-| --bc-button-size            | 32px                    | Size of buttons                                          |
-| --bc-spacing                | 4px                     | Base unit for spacing. Used in multiples many places     |
+| Var name                          | Default value             | Usage                                                                         |
+| --------------------------------- | ------------------------- | ----------------------------------------------------------------------------- |
+| --banner-card-error-color         | var(--lumo-error-color)   | Background color when there's an error crashing the card                      |
+| --banner-card-heading-size        | 3em                       | The main heading of the card                                                  |
+| --banner-card-entity-value-size   | 1.5em                     | Entity value font size                                                        |
+| --banner-card-media-title-size    | 0.9em                     | Media player fonts title font size                                            |
+| --banner-card-button-size         | 32px                      | Size of buttons                                                               |
+| --banner-card-spacing             | 4px                       | Base unit for spacing. Used in multiples many places                          |
+| --banner-card-heading-color-dark  | var(--primary-text-color) | The card measures your bg color to figure out to use dark or light text color |
+| --banner-card-heading-color-light | #fff                      | The card measures your bg color to figure out to use dark or light text color |
 
 ## Example configurations
 
