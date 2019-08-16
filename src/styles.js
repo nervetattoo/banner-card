@@ -2,7 +2,6 @@ import { css } from "lit-element";
 
 export default css`
   :host {
-    --bc-error-color: var(--banner-card-error-color, var(--lumo-error-color));
     --bc-font-size-heading: var(--banner-card-heading-size, 3em);
     --bc-font-size-entity-value: var(--banner-card-entity-value-size, 1.5em);
     --bc-font-size-media-title: var(--banner-card-media-title-size, 0.9em);
@@ -24,10 +23,6 @@ export default css`
     width: var(--bc-button-size);
     height: var(--bc-button-size);
     padding: var(--bc-spacing);
-  }
-
-  ha-card.not-found {
-    background-color: var(--lumo-error-color);
   }
 
   .heading {

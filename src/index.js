@@ -10,19 +10,6 @@ import filterEntity from "./filterEntity";
 // entities:
 //   - entity: light.fibaro_system_fgd212_dimmer_2_level
 
-function renderError(heading, error) {
-  return html`
-    <ha-card class="not-found">
-      <h2 class="heading">
-        ${heading}
-      </h2>
-      <div class="overlay-strip">
-        <div class="error">${error}</div>
-      </div>
-    </ha-card>
-  `;
-}
-
 const ICON_REGEXP = /^(mdi|hass):/;
 function isIcon(value) {
   return typeof value === "string" && value.match(ICON_REGEXP);
@@ -208,9 +195,9 @@ class BannerCard extends LitElement {
             if (!config.attribute) {
               switch (config.domain) {
                 case "light":
-                  return this.renderDomainLight(options);
                 case "switch":
-                  return this.renderDomainSwitch(options);
+                case "input_boolean":
+                  return this.renderAsToggle(options);
                 case "cover":
                   return this.renderDomainCover(options);
                 case "media_player":
@@ -320,7 +307,7 @@ class BannerCard extends LitElement {
     `;
   }
 
-  renderDomainLight({ onClick, size, name, state, entity }) {
+  renderAsToggle({ onClick, size, name, state, domain, entity }) {
     return html`
       <div class="entity-state" style="${this.grid(size)}">
         <span class="entity-name" @click=${onClick}>${name}</span>
@@ -328,22 +315,7 @@ class BannerCard extends LitElement {
           <paper-toggle-button
             class="toggle"
             ?checked=${state === "on"}
-            @click=${this._service("light", "toggle", entity)}
-          />
-        </span>
-      </div>
-    `;
-  }
-
-  renderDomainSwitch({ onClick, size, name, state, entity }) {
-    return html`
-      <div class="entity-state" style="${this.grid(size)}">
-        <span class="entity-name" @click=${onClick}>${name}</span>
-        <span class="entity-value">
-          <paper-toggle-button
-            class="toggle"
-            ?checked=${state === "on"}
-            @click=${this._service("switch", "toggle", entity)}
+            @click=${this._service(domain, "toggle", entity)}
           >
           </paper-toggle-button>
         </span>
