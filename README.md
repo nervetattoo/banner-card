@@ -84,6 +84,7 @@ action:
 
 ## CSS vars for theming
 
+Please see the [official docs on theming](https://www.home-assistant.io/components/frontend/#defining-themes) or [check out a tutorial like this one](https://www.juanmtech.com/themes-in-home-assistant/)
 The card uses the following CSS variables:
 
 | Var name                          | Default value             | Usage                                                                         |
