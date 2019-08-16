@@ -35,7 +35,6 @@ class BannerCard extends LitElement {
       gridSizes: Array,
       entities: Array,
       entityValues: Array,
-      error: String,
       rowSize: Number,
       _hass: Object
     };
@@ -49,7 +48,6 @@ class BannerCard extends LitElement {
     super();
     this.config = {};
     this.entities = [];
-    this.error = null;
     this._hass = {};
   }
 
@@ -77,7 +75,6 @@ class BannerCard extends LitElement {
 
   set hass(hass) {
     this._hass = hass;
-    this.error = null;
 
     // Parse new state values for _entities_
     this.entityValues = this.entities
@@ -88,8 +85,10 @@ class BannerCard extends LitElement {
   parseEntity(config) {
     const hass = this._hass;
     if (!hass.states.hasOwnProperty(config.entity)) {
-      this.error = `Can't find entity ${config.entity}`;
-      return config;
+      return {
+        ...config,
+        error: `Entity not ready`
+      };
     }
     const state = hass.states[config.entity];
     const attributes = state.attributes;
@@ -142,10 +141,6 @@ class BannerCard extends LitElement {
   }
 
   render() {
-    if (this.error) {
-      return renderError(this.config.heading, this.error);
-    }
-
     return html`
       <ha-card style="background: ${this.config.background};">
         ${this.renderHeading()} ${this.renderEntities()}
@@ -181,6 +176,15 @@ class BannerCard extends LitElement {
       <div class="overlay-strip">
         <div class="entities">
           ${this.entityValues.map(config => {
+            if (config.error) {
+              return html`
+                <div class="entity-state" style="${this.grid(config.size)}">
+                  <span class="entity-name">${config.error}</span>
+                  <span class="entity-value error">${config.entity}</span>
+                </div>
+              `;
+            }
+
             const onClick = () => this.openEntityPopover(config.entity);
             const options = { ...config, onClick };
 

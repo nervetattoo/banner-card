@@ -8,7 +8,10 @@ export default css`
     --bc-font-size-media-title: var(--banner-card-media-title-size, 0.9em);
     --bc-spacing: var(--banner-card-spacing, 4px);
     --bc-button-size: var(--banner-card-button-size, 32px);
-    --bc-heading-color-dark: var(--banner-card-heading-color-dark, var(--primary-text-color));
+    --bc-heading-color-dark: var(
+      --banner-card-heading-color-dark,
+      var(--primary-text-color)
+    );
     --bc-heading-color-light: var(--banner-card-heading-color-light, #fff);
   }
   ha-card {
@@ -42,16 +45,6 @@ export default css`
     width: 100%;
   }
 
-  .error {
-    display: flex;
-    padding: calc(var(--bc-spacing) * 4)
-    color: white;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-    font-weight: 700;
-    font-size: 1.4rem;
-  }
   .entities {
     padding: calc(var(--bc-spacing) * 2) 0px;
     color: white;
@@ -71,7 +64,7 @@ export default css`
   }
 
   .media-title {
-    flex: 1 0 ;
+    flex: 1 0;
     overflow: hidden;
     font-weight: 300;
     font-size: var(--bc-font-size-media-title);
@@ -113,6 +106,13 @@ export default css`
     justify-content: center;
   }
 
+  .entity-value.error {
+    display: inline-block;
+    word-wrap: break-word;
+    font-size: 16px;
+    width: 90%;
+  }
+
   .entity-value ha-icon {
     color: white;
   }
@@ -131,5 +131,4 @@ export default css`
   mwc-button {
     --mdc-theme-primary: white;
   }
-
 `;
