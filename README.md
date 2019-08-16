@@ -37,6 +37,20 @@ resources:
 | entities[].image     | _bool_               | Force display the value as a rounded image                                                                                                                                                                  | Will use the provided value as a background for the `<state-badge>` component from HA |
 | entities[].action    | _object_             | Specify a service to be called on tap. Will result in either an icon (if a valid icon is set as value with map_state) or a button with the state value as text                                              | See separate section                                                                  |
 
+### map_state
+
+You can use `map_state` to force a value or icon to be rendered when the entity has a certain state. It either supports a full object where you can override any key for the entity, like `value`, `name`, `unit` and so on, or a shorthand string that maps to `value`.
+Both forms in an example:
+
+```yaml
+entity: media_player.office
+map_state:
+  playing: mdi:disc-player
+  not_playing:
+    value: mdi:stop
+    name: A custom entity heading
+```
+
 ## Using when
 
 You can filter entities with a simple but powerful `when` object. This allows you to filter based on state and/or attributes. It is probably simpliest explained through a few examples

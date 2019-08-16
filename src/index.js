@@ -103,10 +103,20 @@ class BannerCard extends LitElement {
       domain: config.entity.split(".")[0]
     };
 
-    // Will set .value to be the key from entities.*.map_value.{key} that matches the current `state`
+    // Will either:
+    // set .value to be the key from entities.*.map_value.{key} that matches the current `state` if the value is a string
+    // or set all values as dynamicData if it is an object
     const dynamicData = {};
     if (config.map_state && state.state in config.map_state) {
-      dynamicData.value = config.map_state[state.state];
+      const mapStateType = typeof config.map_state;
+      const mappedState = config.map_state[state.state];
+      if (mapStateType === "string") {
+        dynamicData.value = mappedState;
+      } else if (mapStateType === "object") {
+        Object.entries(mappedState).forEach(([key, val]) => {
+          dynamicData[key] = val;
+        });
+      }
     }
 
     return {
