@@ -47,10 +47,10 @@
         "banner-card.*"
       ]
     },
-    "scripts": {
-      "afterBump": "npx tracker-json",
-      "beforeStart": "yarn build",
-      "afterRelease": "rm banner-card.js"
+    "hooks": {
+      "after:bump": "npx tracker-json",
+      "before:init": "yarn build",
+      "after:release": "rm banner-card.js"
     }
   },
   "babel": {
