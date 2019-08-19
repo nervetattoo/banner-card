@@ -19,7 +19,7 @@ class BannerCard extends LitElement {
   static get properties() {
     return {
       config: Object,
-      oclor: String,
+      color: String,
       gridSizes: Array,
       entities: Array,
       entityValues: Array,
