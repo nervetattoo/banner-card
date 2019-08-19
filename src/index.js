@@ -19,6 +19,7 @@ class BannerCard extends LitElement {
   static get properties() {
     return {
       config: Object,
+      oclor: String,
       gridSizes: Array,
       entities: Array,
       entityValues: Array,
@@ -45,6 +46,14 @@ class BannerCard extends LitElement {
 
     this.entities = (config.entities || []).map(parseEntity);
     this.config = config;
+
+    this.color =
+      config.color ||
+      readableColor(
+        config.background,
+        "var(--bc-heading-color-light)",
+        "var(--bc-heading-color-dark)"
+      );
 
     if (typeof config.row_size !== "undefined") {
       if (config.row_size < 1) {
@@ -140,15 +149,9 @@ class BannerCard extends LitElement {
       return null;
     }
 
-    const color = readableColor(
-      this.config.background,
-      "var(--bc-heading-color-light)",
-      "var(--bc-heading-color-dark)"
-    );
-
     const onClick = () => this.config.link && this.navigate(this.config.link);
     return html`
-      <h2 class="heading" style="color: ${color};" @click=${onClick}>
+      <h2 class="heading" @click=${onClick} style="color: ${this.color};">
         ${this.config.heading}
       </h2>
     `;
