@@ -94,8 +94,8 @@ class BannerCard extends LitElement {
     // or set all values as dynamicData if it is an object
     const dynamicData = {};
     if (config.map_state && state.state in config.map_state) {
-      const mapStateType = typeof config.map_state;
       const mappedState = config.map_state[state.state];
+      const mapStateType = typeof mappedState;
       if (mapStateType === "string") {
         dynamicData.value = mappedState;
       } else if (mapStateType === "object") {
@@ -211,21 +211,31 @@ class BannerCard extends LitElement {
     `;
   }
 
-  renderDomainDefault({ value, unit, image, icon, name, size, onClick }) {
-    let htmlContent;
+  renderValue({ icon, value, image, action, click }, fallback) {
     if (icon || isIcon(value)) {
-      htmlContent = html`
-        <ha-icon icon="${icon || value}"></ha-icon>
+      return html`
+        <ha-icon .icon="${icon || value}" @click=${click}></ha-icon>
       `;
     } else if (image === true) {
-      htmlContent = html`
-        <state-badge style="background-image: url(${value});"></state-badge>
-      `;
-    } else {
-      htmlContent = html`
-        ${value} ${unit}
+      return html`
+        <state-badge
+          style="background-image: url(${value});"
+          @click=${click}
+        ></state-badge>
       `;
     }
+
+    return fallback();
+  }
+
+  renderDomainDefault({ value, unit, image, icon, name, size, onClick }) {
+    const htmlContent = this.renderValue(
+      { icon, image, value, click: onClick },
+      () =>
+        html`
+          ${value} ${unit}
+        `
+    );
     return html`
       <div class="entity-state" style="${this.grid(size)}" @click=${onClick}>
         <span class="entity-name">${name}</span>
@@ -235,27 +245,14 @@ class BannerCard extends LitElement {
   }
 
   renderCustom({ value, unit, action, image, icon, name, size, onClick }) {
-    let htmlContent;
-    if (icon || isIcon(value)) {
-      htmlContent = html`
-        <paper-icon-button
-          icon="${icon || value}"
-          role="button"
-          @click=${action}
-        ></paper-icon-button>
-      `;
-    } else if (image === true) {
-      htmlContent = html`
-        <state-badge @click=${action} style="background-image: url(${value});">
-        </state-badge>
-      `;
-    } else {
-      htmlContent = html`
+    const htmlContent = this.renderValue(
+      { icon, image, value, click: action },
+      () => html`
         <mwc-button ?dense=${true} @click=${action}>
           ${value} ${unit}
         </mwc-button>
-      `;
-    }
+      `
+    );
     return html`
       <div class="entity-state" style="${this.grid(size)}">
         <span class="entity-name" @click=${onClick}>${name}</span>
