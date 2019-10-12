@@ -312,12 +312,11 @@ class BannerCard extends LitElement {
       <div class="entity-state" style="${this.grid(size)}">
         <span class="entity-name" @click=${onClick}>${name}</span>
         <span class="entity-value">
-          <paper-toggle-button
-            class="toggle"
+          <mwc-switch
             ?checked=${state === "on"}
             @click=${this._service(domain, "toggle", entity)}
           >
-          </paper-toggle-button>
+          </mwc-switch>
         </span>
       </div>
     `;

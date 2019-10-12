@@ -112,18 +112,10 @@ export default css`
     color: white;
   }
 
-  .toggle {
-    cursor: pointer;
-    --paper-toggle-button-unchecked-bar-color: rgba(255, 255, 255, 0.4);
-    --paper-toggle-button-unchecked-button-color: rgba(255, 255, 255, 0.4);
-    --paper-toggle-button-unchecked-ink-color: rgba(1, 1, 1, 0.6);
-
-    --paper-toggle-button-checked-bar-color: white;
-    --paper-toggle-button-checked-button-color: white;
-    --paper-toggle-button-checked-ink-color: white;
-  }
-
   mwc-button {
     --mdc-theme-primary: white;
+  }
+  mwc-switch {
+    --mdc-theme-secondary: white;
   }
 `;
