@@ -20,7 +20,6 @@ class BannerCard extends LitElement {
     return {
       config: Object,
       color: String,
-      gridSizes: Array,
       entities: Array,
       entityValues: Array,
       rowSize: Number,
@@ -62,11 +61,6 @@ class BannerCard extends LitElement {
       this.rowSize = config.row_size;
     }
     this.rowSize = this.rowSize || 3;
-
-    // calculate grid
-    this.gridSizes = Array(this.rowSize)
-      .fill(this.rowSize)
-      .map((size, index) => Math.round((1 / size) * 100) * (index + 1));
   }
 
   set hass(hass) {
@@ -123,11 +117,9 @@ class BannerCard extends LitElement {
 
   grid(index = 1) {
     if (index === "full" || index > this.rowSize) {
-      index = this.rowSize;
+      return `grid-column: span ${this.rowSize};`;
     }
-
-    const width = this.gridSizes[index - 1];
-    return `flex: 0 0 ${width}%; width: ${width}%;`;
+    return `grid-column: span ${index};`;
   }
 
   // Factory function to make it a little bit easier to create
@@ -164,7 +156,10 @@ class BannerCard extends LitElement {
 
     return html`
       <div class="overlay-strip">
-        <div class="entities">
+        <div
+          class="entities"
+          style="grid-template-columns: repeat(${this.rowSize}, 1fr);"
+        >
           ${this.entityValues.map(config => {
             if (config.error) {
               return html`

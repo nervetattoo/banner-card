@@ -43,11 +43,7 @@ export default css`
   .entities {
     padding: calc(var(--bc-spacing) * 2) 0px;
     color: white;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    margin-left: -1px;
+    display: grid;
   }
 
   .entity-state {
@@ -56,6 +52,7 @@ export default css`
     align-items: center;
     margin: calc(var(--bc-spacing) * 2) 0;
     box-shadow: -1px 0px 0 0 white;
+    width: 100%;
   }
 
   .media-title {
