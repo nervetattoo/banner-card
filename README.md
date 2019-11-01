@@ -5,3 +5,7 @@ with the one you find in this repo.
 
 this will exist untill pulled into mainline or otherwise fixed
 by nervetattoo.
+
+for help, setup and all infos & wiki
+
+go to https://github.com/nervetattoo/banner-card
