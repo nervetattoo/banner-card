@@ -1,4 +1,4 @@
-this fixes TEMPORARILY the issues with coev entities
+this fixes TEMPORARILY the issues with cover entities
 for the work of nervetattoo
 replace banner-card.js in your HASS (HOME ASSISTANT)
 with the one you find in this repo.
