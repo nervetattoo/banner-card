@@ -38,6 +38,9 @@ function compareValue(expect, real) {
 // And the entire HASS state tree
 // this function will determine if the passed entity passes filtering rules or not
 function filterEntity(config, allStates) {
+  if (!allStates.hasOwnProperty(config.entity)) {
+    return false;
+  }
   if (config.when) {
     const { state: expect, entity = config.entity, attributes } =
       typeof config.when === "string" ? { state: config.when } : config.when;
