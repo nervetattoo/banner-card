@@ -99,25 +99,6 @@ class BannerCard extends LitElement {
       }
     }
 
-    if (
-      hass.states[config.entity].attributes.hasOwnProperty("current_position")
-    ) {
-      const data = {
-        name: attributes.friendly_name,
-        state: attributes.current_position,
-        value: getAttributeOrState(state, config.attribute),
-        unit: attributes.unit_of_measurement,
-        attributes,
-        domain: config.entity.split(".")[0]
-      };
-
-      return {
-        ...data,
-        ...config,
-        ...dynamicData
-      };
-    }
-
     const data = {
       name: attributes.friendly_name,
       state: state.state,
@@ -126,6 +107,12 @@ class BannerCard extends LitElement {
       attributes,
       domain: config.entity.split(".")[0]
     };
+
+    if (attributes.hasOwnProperty("current_position")) {
+      const data = {
+        state: attributes.current_position
+      };
+    }
 
     return {
       ...data,
