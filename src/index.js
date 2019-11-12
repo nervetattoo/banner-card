@@ -83,15 +83,6 @@ class BannerCard extends LitElement {
     const state = hass.states[config.entity];
     const attributes = state.attributes;
 
-    const data = {
-      name: attributes.friendly_name,
-      state: state.state,
-      value: getAttributeOrState(state, config.attribute),
-      unit: attributes.unit_of_measurement,
-      attributes,
-      domain: config.entity.split(".")[0]
-    };
-
     // Will either:
     // set .value to be the key from entities.*.map_value.{key} that matches the current `state` if the value is a string
     // or set all values as dynamicData if it is an object
@@ -106,6 +97,19 @@ class BannerCard extends LitElement {
           dynamicData[key] = val;
         });
       }
+    }
+
+    const data = {
+      name: attributes.friendly_name,
+      state: state.state,
+      value: getAttributeOrState(state, config.attribute),
+      unit: attributes.unit_of_measurement,
+      attributes,
+      domain: config.entity.split(".")[0]
+    };
+
+    if (attributes.hasOwnProperty("current_position")) {
+      data.state = attributes.current_position
     }
 
     return {
@@ -318,13 +322,14 @@ class BannerCard extends LitElement {
   }
 
   renderDomainCover({ onClick, size, name, state, entity }) {
-    const isclosed = state === "closed";
+    const isclosed = state === "closed" || state === 0.0;
+    const isopen = state === "open" || state === 100.0;
     return html`
       <div class="entity-state" style="${this.grid(size)}">
         <span class="entity-name" @click=${onClick}>${name}</span>
         <span class="entity-value">
           <paper-icon-button
-            ?disabled=${!isclosed}
+            ?disabled=${isopen}
             icon="hass:arrow-up"
             role="button"
             @click=${this._service("cover", "open_cover", entity)}
