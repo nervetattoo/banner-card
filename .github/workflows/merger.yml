@@ -1,0 +1,37 @@
+name: Format and merge PRs
+
+on:
+  status: {}
+  pull_request:
+    types:
+      - labeled
+
+jobs:
+  format-merge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
+      - name: Install
+        run: yarn install
+        env:
+          CI: true
+
+      - name: Run prettier
+        run: yarn run prettier --write 'src/**/*.js'
+
+      - uses: stefanzweifel/git-auto-commit-action@v2.1.0
+        with:
+          commit_message: Prettier
+          branch: ${{ github.head_ref }}
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: maxkomarychev/merge-pal-action@v0.5.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
