@@ -16,33 +16,38 @@ jobs:
           trigger: '/merge'
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-      - run: 'echo Found it!'
-        if: steps.check.outputs.triggered == 'true'
+          
+      - uses: zwaldowski/match-label-action@v1
+        id: label
+        with:
+          allowed: >
+            lgtm
         
       - uses: actions/checkout@v1
-        if: steps.check.outputs.triggered == 'true'
+        if: steps.label.outputs.match == 'lgtm'
 
       - name: Use Node.js 12.x
-        if: steps.check.outputs.triggered == 'true'
+        if: steps.label.outputs.match == 'lgtm'
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
 
       - name: Install
-        if: steps.check.outputs.triggered == 'true'
+        if: steps.label.outputs.match == 'lgtm'
         run: yarn install
 
       - name: Run prettier
-        if: steps.check.outputs.triggered == 'true'
+        if: steps.label.outputs.match == 'lgtm'
         run: yarn run prettier --write 'src/**/*.js'
    
       - name: push
+        if: steps.label.outputs.match == 'lgtm'
         uses: github-actions-x/commit@v2.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: 'Prettier'
         
       - uses: maxkomarychev/merge-pal-action@v0.5.1
-        if: steps.check.outputs.triggered == 'true'
+        if: steps.label.outputs.match == 'lgtm'
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
