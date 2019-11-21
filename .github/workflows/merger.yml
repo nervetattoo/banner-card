@@ -1,37 +1,57 @@
 name: Format and merge PRs
 
 on:
-  status: {}
   pull_request:
-    types:
-      - labeled
+    types: [opened]
+  issue_comment:
+    types: [created]
 
 jobs:
   format-merge:
     runs-on: ubuntu-latest
     steps:
+      - uses: khan/pull-request-comment-trigger@master
+        id: check
+        with:
+          trigger: '/merge'
+        env:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+      - run: 'echo Found it!'
+        if: steps.check.outputs.triggered == 'true'
+        
       - uses: actions/checkout@v1
+        if: steps.check.outputs.triggered == 'true'
 
       - name: Use Node.js 12.x
+        if: steps.check.outputs.triggered == 'true'
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
 
       - name: Install
+        if: steps.check.outputs.triggered == 'true'
         run: yarn install
         env:
           CI: true
 
       - name: Run prettier
+        if: steps.check.outputs.triggered == 'true'
         run: yarn run prettier --write 'src/**/*.js'
 
-      - uses: stefanzweifel/git-auto-commit-action@v2.1.0
-        with:
-          commit_message: Prettier
-          branch: ${{ github.head_ref }}
+      - name: Commit changes # This is the step name that will be displayed in your runs
+        if: steps.check.outputs.triggered == 'true'
+        uses: EndBug/add-and-commit@v2.1.0 # You can change this to use a specific version
+        with: # See more info about inputs below
+          author_name: Prettier
+          author_email: actions@github.com
+          message: "Prettier"
+          path: "."
+          pattern: "*.js"
+          force: false
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Leave this line unchanged
 
       - uses: maxkomarychev/merge-pal-action@v0.5.1
+        if: steps.check.outputs.triggered == 'true'
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
