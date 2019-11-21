@@ -31,26 +31,17 @@ jobs:
       - name: Install
         if: steps.check.outputs.triggered == 'true'
         run: yarn install
-        env:
-          CI: true
 
       - name: Run prettier
         if: steps.check.outputs.triggered == 'true'
         run: yarn run prettier --write 'src/**/*.js'
-
-      - name: Commit changes # This is the step name that will be displayed in your runs
-        if: steps.check.outputs.triggered == 'true'
-        uses: EndBug/add-and-commit@v2.1.0 # You can change this to use a specific version
-        with: # See more info about inputs below
-          author_name: Prettier
-          author_email: actions@github.com
-          message: "Prettier"
-          path: "."
-          pattern: "*.js"
-          force: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Leave this line unchanged
-
+   
+      - name: push
+        uses: github-actions-x/commit@v2.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'Prettier'
+        
       - uses: maxkomarychev/merge-pal-action@v0.5.1
         if: steps.check.outputs.triggered == 'true'
         with:
