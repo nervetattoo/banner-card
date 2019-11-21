@@ -29,8 +29,8 @@ jobs:
         with:
           commit_message: Prettier
           branch: ${{ github.head_ref }}
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: maxkomarychev/merge-pal-action@v0.5.1
         with:
