@@ -8,6 +8,8 @@ A fluffy linkable banner with interactive glances to spice up your home dashboar
 
 ## Installation
 
+[`Try HACS first`](https://hacs.xyz/)
+
 1. Download the `banner-card.js` from the [latest release](https://github.com/nervetattoo/banner-card/releases/latest) and store it in your `configuration/www` folder.
    _Previously you could download the source file from Github but starting from the 0.14 release that is no longer possible. If you try to do so it will crash_
 2. Configure Lovelace to load the card:
@@ -22,7 +24,7 @@ resources:
 
 | Key                  | Type                 | Description                                                                                                                                                                                                 | Example                                                                               |
 | -------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| heading              | _string_             | The heading to display. Set to false to hide header (**Note**: Also remember to escape!)                                                                                                                                                                  | `heading: "\U0001F6CB Living room"`                                                   |
+| heading              | _string_             | The heading to display. Set to false to hide header (**Note**: Also remember to escape!)                                                                                                                    | `heading: "\U0001F6CB Living room"`                                                   |
 | background           | _string_             | A valid CSS color to use as the background                                                                                                                                                                  | `background: "#EDE7B0"`, `background: red`                                            |
 | color                | _string_             | A valid CSS color to use as the text color                                                                                                                                                                  | `color: "#EDE7B0"`, `color: red`                                                      |
 | link                 | _string_             | A link, to a different view in HA for example                                                                                                                                                               | `link: /lovelace/living_room`                                                         |
