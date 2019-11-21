@@ -7,14 +7,7 @@ on:
 jobs:
   format-merge:
     runs-on: ubuntu-latest
-    steps:
-      - uses: khan/pull-request-comment-trigger@master
-        id: check
-        with:
-          trigger: '/merge'
-        env:
-          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-          
+    steps:          
       - uses: zwaldowski/match-label-action@v1
         id: label
         with:
