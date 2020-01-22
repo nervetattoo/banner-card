@@ -1,9 +1,9 @@
 {
   "banner-card": {
-    "version": "0.9.0",
-    "updated_at": "2019-10-12",
+    "version": "0.10.0",
+    "updated_at": "2020-01-22",
     "visit_repo": "https://github.com/nervetattoo/banner-card",
-    "remote_location": "https://github.com/nervetattoo/banner-card/releases/download/0.9.0/banner-card.js",
-    "changelog": "https://github.com/nervetattoo/banner-card/releases/0.9.0"
+    "remote_location": "https://github.com/nervetattoo/banner-card/releases/download/0.10.0/banner-card.js",
+    "changelog": "https://github.com/nervetattoo/banner-card/releases/0.10.0"
   }
 }
