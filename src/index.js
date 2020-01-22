@@ -2,6 +2,13 @@ import { LitElement, html, css } from "lit-element";
 import styles from "./styles";
 import { parseEntity, getAttributeOrState, readableColor } from "./utils";
 import filterEntity from "./filterEntity";
+import { name, version } from "../package.json";
+
+function printVersion(version) {
+  console.info(`%c${name}: ${version}`, "font-weight: bold");
+}
+
+printVersion(version);
 
 //
 // type: custom:banner
@@ -109,8 +116,8 @@ class BannerCard extends LitElement {
     };
 
     if (attributes.hasOwnProperty("current_position")) {
-          data.state = attributes.current_position
-        }
+      data.state = attributes.current_position;
+    }
 
     return {
       ...data,
