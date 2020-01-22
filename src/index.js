@@ -239,10 +239,10 @@ class BannerCard extends LitElement {
         `
     );
     return html`
-      <div class="entity-state" style="${this.grid(size)}" @click=${onClick}>
+      <a class="entity-state" style="${this.grid(size)}" @click=${onClick}>
         <span class="entity-name">${name}</span>
         <span class="entity-value">${htmlContent}</span>
-      </div>
+      </a>
     `;
   }
 
@@ -257,7 +257,7 @@ class BannerCard extends LitElement {
     );
     return html`
       <div class="entity-state" style="${this.grid(size)}">
-        <span class="entity-name" @click=${onClick}>${name}</span>
+        <a class="entity-name" @click=${onClick}>${name}</a>
         <span class="entity-value">${htmlContent}</span>
       </div>
     `;
@@ -279,7 +279,7 @@ class BannerCard extends LitElement {
     const mediaTitle = [a.media_artist, a.media_title].join(" – ");
     return html`
       <div class="entity-state" style="${this.grid(size || "full")}">
-        <span class="entity-name" @click=${onClick}>${name}</span>
+        <a class="entity-name" @click=${onClick}>${name}</a>
         <div class="entity-value">
           <div class="entity-state-left media-title">
             ${mediaTitle}
@@ -309,7 +309,7 @@ class BannerCard extends LitElement {
   renderAsToggle({ onClick, size, name, state, domain, entity }) {
     return html`
       <div class="entity-state" style="${this.grid(size)}">
-        <span class="entity-name" @click=${onClick}>${name}</span>
+        <a class="entity-name" @click=${onClick}>${name}</a>
         <span class="entity-value">
           <mwc-switch
             ?checked=${state === "on"}
@@ -326,7 +326,7 @@ class BannerCard extends LitElement {
     const isopen = state === "open" || state === 100.0;
     return html`
       <div class="entity-state" style="${this.grid(size)}">
-        <span class="entity-name" @click=${onClick}>${name}</span>
+        <a class="entity-name" @click=${onClick}>${name}</a>
         <span class="entity-value">
           <paper-icon-button
             ?disabled=${isopen}

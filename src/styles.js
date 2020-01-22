@@ -19,6 +19,10 @@ export default css`
     align-items: center;
   }
 
+  a {
+    cursor: pointer;
+  }
+
   paper-icon-button {
     width: var(--bc-button-size);
     height: var(--bc-button-size);
@@ -50,7 +54,7 @@ export default css`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: calc(var(--bc-spacing) * 2) 0;
+    margin-bottom: var(--bc-spacing);
     box-shadow: -1px 0px 0 0 white;
     width: 100%;
   }
@@ -86,13 +90,14 @@ export default css`
   .entity-name {
     font-weight: 700;
     white-space: nowrap;
+    padding-top: calc(var(--bc-spacing) * 2);
+    padding-bottom: calc(var(--bc-spacing) * 2);
   }
 
   .entity-value {
     display: flex;
     width: 100%;
     flex: 1 0;
-    padding-top: var(--bc-spacing);
     font-size: var(--bc-font-size-entity-value);
     align-items: center;
     justify-content: center;
