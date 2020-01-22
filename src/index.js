@@ -22,6 +22,17 @@ function isIcon(value) {
   return typeof value === "string" && value.match(ICON_REGEXP);
 }
 
+function entityName(name, onClick = null) {
+  if (onClick) {
+    return html`
+      <a class="entity-name" @click=${onClick}>${name}</a>
+    `;
+  }
+  return html`
+    <span class="entity-name">${name}</span>
+  `;
+}
+
 class BannerCard extends LitElement {
   static get properties() {
     return {
@@ -148,14 +159,28 @@ class BannerCard extends LitElement {
   }
 
   renderHeading() {
-    if (this.config.heading === false) {
+    let heading = this.config.heading;
+    if (heading === false) {
       return null;
+    }
+
+    if (!Array.isArray(heading)) {
+      heading = [heading];
     }
 
     const onClick = () => this.config.link && this.navigate(this.config.link);
     return html`
       <h2 class="heading" @click=${onClick} style="color: ${this.color};">
-        ${this.config.heading}
+        ${heading.map(fragment => {
+          if (isIcon(fragment)) {
+            return html`
+              <ha-icon class="heading-icon" .icon="${fragment}"></ha-icon>
+            `;
+          }
+          return html`
+            <span>${fragment}</span>
+          `;
+        })}
       </h2>
     `;
   }
@@ -175,7 +200,7 @@ class BannerCard extends LitElement {
             if (config.error) {
               return html`
                 <div class="entity-state" style="${this.grid(config.size)}">
-                  <span class="entity-name">${config.error}</span>
+                  ${entityName(config.error)}
                   <span class="entity-value error">${config.entity}</span>
                 </div>
               `;
@@ -247,7 +272,7 @@ class BannerCard extends LitElement {
     );
     return html`
       <a class="entity-state" style="${this.grid(size)}" @click=${onClick}>
-        <span class="entity-name">${name}</span>
+        ${entityName(name, onClick)}
         <span class="entity-value">${htmlContent}</span>
       </a>
     `;
@@ -264,7 +289,7 @@ class BannerCard extends LitElement {
     );
     return html`
       <div class="entity-state" style="${this.grid(size)}">
-        <a class="entity-name" @click=${onClick}>${name}</a>
+        ${entityName(name, onClick)}
         <span class="entity-value">${htmlContent}</span>
       </div>
     `;
@@ -286,7 +311,7 @@ class BannerCard extends LitElement {
     const mediaTitle = [a.media_artist, a.media_title].join(" – ");
     return html`
       <div class="entity-state" style="${this.grid(size || "full")}">
-        <a class="entity-name" @click=${onClick}>${name}</a>
+        ${entityName(name, onClick)}
         <div class="entity-value">
           <div class="entity-state-left media-title">
             ${mediaTitle}
@@ -316,7 +341,7 @@ class BannerCard extends LitElement {
   renderAsToggle({ onClick, size, name, state, domain, entity }) {
     return html`
       <div class="entity-state" style="${this.grid(size)}">
-        <a class="entity-name" @click=${onClick}>${name}</a>
+        ${entityName(name, onClick)}
         <span class="entity-value">
           <mwc-switch
             ?checked=${state === "on"}
@@ -333,7 +358,7 @@ class BannerCard extends LitElement {
     const isopen = state === "open" || state === 100.0;
     return html`
       <div class="entity-state" style="${this.grid(size)}">
-        <a class="entity-name" @click=${onClick}>${name}</a>
+        ${entityName(name, onClick)}
         <span class="entity-value">
           <paper-icon-button
             ?disabled=${isopen}

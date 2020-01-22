@@ -30,12 +30,18 @@ export default css`
   }
 
   .heading {
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: var(--bc-font-size-heading);
     font-weight: 300;
     cursor: pointer;
-    align-self: stretch;
-    text-align: center;
+  }
+
+  ha-icon.heading-icon {
+    --iron-icon-width: 1em;
+    --iron-icon-height: 1em;
+    margin: 0 var(--bc-spacing);
   }
 
   .overlay-strip {
@@ -54,6 +60,7 @@ export default css`
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: var(--bc-spacing);
     margin-bottom: var(--bc-spacing);
     box-shadow: -1px 0px 0 0 white;
     width: 100%;
