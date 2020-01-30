@@ -156,6 +156,14 @@ _Using map_state to render a switch as a colored icon_
       color: yellow
 ```
 
+_Use a background image instead of a color_
+
+```yaml
+type: custom:banner-card
+background: 'url("https://source.unsplash.com/random/500x300")'
+heading: Image bacground
+```
+
 _Basic examples_
 
 ```yaml
