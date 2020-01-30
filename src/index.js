@@ -245,10 +245,15 @@ class BannerCard extends LitElement {
     `;
   }
 
-  renderValue({ icon, value, image, action, click }, fallback) {
+  renderValue({ icon, value, image, action, click, color }, fallback) {
     if (icon || isIcon(value)) {
+      color = color ? `color: ${color}` : "";
       return html`
-        <ha-icon .icon="${icon || value}" @click=${click}></ha-icon>
+        <ha-icon
+          .icon="${icon || value}"
+          style="${color}"
+          @click=${click}
+        ></ha-icon>
       `;
     } else if (image === true) {
       return html`
@@ -262,9 +267,9 @@ class BannerCard extends LitElement {
     return fallback();
   }
 
-  renderDomainDefault({ value, unit, image, icon, name, size, onClick }) {
+  renderDomainDefault({ value, unit, name, size, onClick, ...data }) {
     const htmlContent = this.renderValue(
-      { icon, image, value, click: onClick },
+      { ...data, value, click: onClick },
       () =>
         html`
           ${value} ${unit}
@@ -278,9 +283,9 @@ class BannerCard extends LitElement {
     `;
   }
 
-  renderCustom({ value, unit, action, image, icon, name, size, onClick }) {
+  renderCustom({ value, unit, action, name, size, onClick, ...data }) {
     const htmlContent = this.renderValue(
-      { icon, image, value, click: action },
+      { ...data, value, unit, click: action },
       () => html`
         <mwc-button ?dense=${true} @click=${action}>
           ${value} ${unit}

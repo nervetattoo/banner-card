@@ -141,7 +141,22 @@ The card uses the following CSS variables:
 | --banner-card-heading-color-dark  | var(--primary-text-color) | The card measures your bg color to figure out to use dark or light text color |
 | --banner-card-heading-color-light | #fff                      | The card measures your bg color to figure out to use dark or light text color |
 
-## Example configurations
+## Examples
+
+_Using map_state to render a switch as a colored icon_
+
+```yaml
+- entity: switch.switch
+  name: Is it on?
+  domain: sensor
+  value: mdi:star
+  color: black
+  map_state:
+    "on":
+      color: yellow
+```
+
+_Basic examples_
 
 ```yaml
 type: custom:banner-card
@@ -160,7 +175,9 @@ entities:
 
 ```yaml
 type: custom:banner-card
-heading: "\U0001F6C1 Bathroom"
+heading:
+  - mdi:shower
+  - Bathroom
 background: "#B0C2ED"
 link: /lovelace/bathroom
 entities:
