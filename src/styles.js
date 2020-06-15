@@ -17,13 +17,14 @@ export default css`
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow-x: auto !important;
   }
 
   a {
     cursor: pointer;
   }
 
-  paper-icon-button {
+  ha-icon-button {
     width: var(--bc-button-size);
     height: var(--bc-button-size);
     padding: var(--bc-spacing);
