@@ -322,34 +322,35 @@ class BannerCard extends LitElement {
             ${mediaTitle}
           </div>
           <div class="entity-state-right media-controls">
-            <paper-icon-button
+            <ha-icon-button
               icon="mdi:skip-previous"
               role="button"
               @click=${this._service(domain, "media_previous_track", entity)}
-            ></paper-icon-button>
-            <paper-icon-button
+            ></ha-icon-button>
+            <ha-icon-button
               icon="${isPlaying ? "mdi:stop" : "mdi:play"}"
               role="button"
               @click=${this._service(domain, action, entity)}
-            ></paper-icon-button>
-            <paper-icon-button
+            ></ha-icon-button>
+            <ha-icon-button
               icon="mdi:skip-next"
               role="button"
               @click=${this._service(domain, "media_next_track", entity)}
-            ></paper-icon-button>
+            ></ha-icon-button>
           </div>
         </div>
       </div>
     `;
   }
 
-    renderAsToggle({ onClick, size, name, state, domain, entity, color }) {
-        color = color ? color : "var(--switch-checked-color)";
-      return html` 
+  renderAsToggle({ onClick, size, name, state, domain, entity, color }) {
+    color = color ? color : "var(--switch-checked-color)";
+    return html`
       <div class="entity-state" style="${this.grid(size)}">
         ${entityName(name, onClick)}
         <span class="entity-value">
-          <mwc-switch style="--mdc-theme-secondary: ${color};"
+          <mwc-switch
+            style="--mdc-theme-secondary: ${color};"
             ?checked=${state === "on"}
             @click=${this._service(domain, "toggle", entity)}
           >
@@ -366,23 +367,23 @@ class BannerCard extends LitElement {
       <div class="entity-state" style="${this.grid(size)}">
         ${entityName(name, onClick)}
         <span class="entity-value">
-          <paper-icon-button
+          <ha-icon-button
             ?disabled=${isopen}
             icon="hass:arrow-up"
             role="button"
             @click=${this._service("cover", "open_cover", entity)}
-          ></paper-icon-button>
-          <paper-icon-button
+          ></ha-icon-button>
+          <ha-icon-button
             icon="hass:stop"
             role="button"
             @click=${this._service("cover", "stop_cover", entity)}
-          ></paper-icon-button>
-          <paper-icon-button
+          ></ha-icon-button>
+          <ha-icon-button
             ?disabled=${isclosed}
             icon="hass:arrow-down"
             role="button"
             @click=${this._service("cover", "close_cover", entity)}
-          ></paper-icon-button>
+          ></ha-icon-button>
         </span>
       </div>
     `;
