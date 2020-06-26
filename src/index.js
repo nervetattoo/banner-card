@@ -343,12 +343,14 @@ class BannerCard extends LitElement {
     `;
   }
 
-  renderAsToggle({ onClick, size, name, state, domain, entity }) {
+  renderAsToggle({ onClick, size, name, state, domain, entity, color }) {
+    color = color ? color : "var(--switch-checked-color)";
     return html`
       <div class="entity-state" style="${this.grid(size)}">
         ${entityName(name, onClick)}
         <span class="entity-value">
           <mwc-switch
+            style="--mdc-theme-secondary: ${color};"
             ?checked=${state === "on"}
             @click=${this._service(domain, "toggle", entity)}
           >
