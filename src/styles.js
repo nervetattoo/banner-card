@@ -81,6 +81,12 @@ export default css`
     flex: 0 0 calc(var(--bc-button-size) * 3);
   }
 
+  .mini-media-controls {
+    display: block;
+    min-width: -webkit-fill-available;
+    padding: 16px 16px 0 16px;
+  }
+
   .entity-state.expand .entity-value {
     width: 100%;
   }

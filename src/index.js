@@ -1,8 +1,18 @@
-import { LitElement, html, css } from "lit-element";
+import { LitElement, html } from "lit-element";
 import styles from "./styles";
 import { parseEntity, getAttributeOrState, readableColor } from "./utils";
 import filterEntity from "./filterEntity";
 import { name, version } from "../package.json";
+
+import { buildConfig } from "./customEntities/const";
+import MediaPlayerObject from "./customEntities/miniMediaPlayer";
+
+if (!window.customElements.get("ha-slider")) {
+  window.customElements.define(
+    "ha-slider",
+    class extends window.customElements.get("paper-slider") {}
+  );
+}
 
 function printVersion(version) {
   console.info(`%c${name}: ${version}`, "font-weight: bold");
@@ -172,15 +182,15 @@ class BannerCard extends LitElement {
     return html`
       <h2 class="heading" @click=${onClick} style="color: ${this.color};">
         ${heading.map(fragment => {
-          if (isIcon(fragment)) {
-            return html`
+      if (isIcon(fragment)) {
+        return html`
               <ha-icon class="heading-icon" .icon="${fragment}"></ha-icon>
             `;
-          }
-          return html`
+      }
+      return html`
             <span>${fragment}</span>
           `;
-        })}
+    })}
       </h2>
     `;
   }
@@ -197,49 +207,53 @@ class BannerCard extends LitElement {
           style="grid-template-columns: repeat(${this.rowSize}, 1fr);"
         >
           ${this.entityValues.map(config => {
-            if (config.error) {
-              return html`
+      if (config.error) {
+        return html`
                 <div class="entity-state" style="${this.grid(config.size)}">
                   ${entityName(config.error)}
                   <span class="entity-value error">${config.entity}</span>
                 </div>
               `;
+      }
+
+      const onClick = () => this.openEntityPopover(config.entity);
+      const options = { ...config, onClick };
+
+      // Allow overriding rendering + action if custom is set to true
+      if (config.action) {
+        return this.renderCustom({
+          ...options,
+          action: () => {
+            const { service, ...serviceData } = config.action;
+            const [domain, action] = service.split(".");
+            this._hass.callService(domain, action, {
+              entity_id: config.entity,
+              ...serviceData
+            });
+          }
+        });
+      }
+
+      // If an attribute is requested we assume not to render
+      // any domain specifics
+      if (!config.attribute) {
+        switch (config.domain) {
+          case "light":
+          case "switch":
+          case "input_boolean":
+            return this.renderAsToggle(options);
+          case "cover":
+            return this.renderDomainCover(options);
+          case "media_player":
+            if (config.type === "custom:mini-media-player") {
+              return this.renderMiniMediaPlayer(options);
             }
 
-            const onClick = () => this.openEntityPopover(config.entity);
-            const options = { ...config, onClick };
-
-            // Allow overriding rendering + action if custom is set to true
-            if (config.action) {
-              return this.renderCustom({
-                ...options,
-                action: () => {
-                  const { service, ...serviceData } = config.action;
-                  const [domain, action] = service.split(".");
-                  this._hass.callService(domain, action, {
-                    entity_id: config.entity,
-                    ...serviceData
-                  });
-                }
-              });
-            }
-
-            // If an attribute is requested we assume not to render
-            // any domain specifics
-            if (!config.attribute) {
-              switch (config.domain) {
-                case "light":
-                case "switch":
-                case "input_boolean":
-                  return this.renderAsToggle(options);
-                case "cover":
-                  return this.renderDomainCover(options);
-                case "media_player":
-                  return this.renderDomainMediaPlayer(options);
-              }
-            }
-            return this.renderDomainDefault(options);
-          })}
+            return this.renderDomainMediaPlayer(options);
+        }
+      }
+      return this.renderDomainDefault(options);
+    })}
         </div>
       </div>
     `;
@@ -301,14 +315,14 @@ class BannerCard extends LitElement {
   }
 
   renderDomainMediaPlayer({
-    onClick,
-    attributes: a,
-    size,
-    name,
-    state,
-    entity,
-    domain
-  }) {
+                            onClick,
+                            attributes: a,
+                            size,
+                            name,
+                            state,
+                            entity,
+                            domain
+                          }) {
     const isPlaying = state === "playing";
 
     const action = isPlaying ? "media_pause" : "media_play";
@@ -337,6 +351,32 @@ class BannerCard extends LitElement {
               role="button"
               @click=${this._service(domain, "media_next_track", entity)}
             ></ha-icon-button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  renderMiniMediaPlayer(config) {
+    const miniMediaPlayerConfig = buildConfig(config);
+    const player = new MediaPlayerObject(
+      this._hass,
+      miniMediaPlayerConfig,
+      this._hass.states[miniMediaPlayerConfig.entity]
+    );
+
+    return html`
+      <div
+        class="entity-state"
+        style="${this.grid(miniMediaPlayerConfig.size || "full")}"
+      >
+        <div class="entity-value">
+          <div class="mini-media-controls">
+            <mini-media-player
+              ._hass=${this._hass}
+              .config=${miniMediaPlayerConfig}
+              .player=${player}
+            ></mini-media-player>
           </div>
         </div>
       </div>
