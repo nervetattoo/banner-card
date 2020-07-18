@@ -4,6 +4,8 @@ import { parseEntity, getAttributeOrState, readableColor } from "./utils";
 import filterEntity from "./filterEntity";
 import { name, version } from "../package.json";
 
+import "./customEntities/remoteControls";
+
 function printVersion(version) {
   console.info(`%c${name}: ${version}`, "font-weight: bold");
 }
@@ -236,6 +238,8 @@ class BannerCard extends LitElement {
                   return this.renderDomainCover(options);
                 case "media_player":
                   return this.renderDomainMediaPlayer(options);
+                case "remote":
+                  return this.renderDomainRemote(options);
               }
             }
             return this.renderDomainDefault(options);
@@ -337,6 +341,21 @@ class BannerCard extends LitElement {
               role="button"
               @click=${this._service(domain, "media_next_track", entity)}
             ></ha-icon-button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  renderDomainRemote(config) {
+    return html`
+      <div class="entity-state" style="${this.grid(config.size || "full")}">
+        <div class="entity-value">
+          <div class="entity-padded">
+            <remote-controls
+              .hass="${this._hass}"
+              .config="${config}"
+            ></remote-controls>
           </div>
         </div>
       </div>
