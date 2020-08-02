@@ -5,6 +5,7 @@ export default css`
     --bc-font-size-heading: var(--banner-card-heading-size, 3em);
     --bc-font-size-entity-value: var(--banner-card-entity-value-size, 1.5em);
     --bc-font-size-media-title: var(--banner-card-media-title-size, 0.9em);
+    --bc-margin-heading: var(--banner-card-heading-margin, 1em);
     --bc-spacing: var(--banner-card-spacing, 4px);
     --bc-button-size: var(--banner-card-button-size, 32px);
     --bc-heading-color-dark: var(
@@ -35,6 +36,7 @@ export default css`
     justify-content: center;
     align-items: center;
     font-size: var(--bc-font-size-heading);
+    margin: var(--bc-margin-heading);
     font-weight: 300;
     cursor: pointer;
   }
