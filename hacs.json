@@ -1,5 +1,4 @@
 {
   "homeassistant": "0.100.0",
-  "render_readme": true,
-  "name": "banner-card-forked"
+  "render_readme": true
 }
