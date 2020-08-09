@@ -81,6 +81,16 @@ export default css`
     flex: 0 0 calc(var(--bc-button-size) * 3);
   }
 
+  .entity-padded {
+    display: block;
+    min-width: -webkit-fill-available;
+    padding: 16px 16px 0 16px;
+  }
+
+  .small-text {
+    font-size: 0.6em;
+  }
+
   .entity-state.expand .entity-value {
     width: 100%;
   }

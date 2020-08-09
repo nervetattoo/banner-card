@@ -17,6 +17,7 @@
     "@babel/core": "^7.10.3",
     "@babel/register": "^7.10.3",
     "@rollup/plugin-commonjs": "^13.0.0",
+    "@ava/babel-preset-stage-4": "^4.0.0",
     "ava": "^3.9.0",
     "husky": "^4.2.5",
     "prettier": "^1.18.2",

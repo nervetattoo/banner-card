@@ -22,6 +22,18 @@ function isIcon(value) {
   return typeof value === "string" && value.match(ICON_REGEXP);
 }
 
+function createElement(tag, config, hass) {
+  const element = document.createElement(tag);
+
+  if (element.setConfig) {
+    element.setConfig(config);
+  }
+
+  element.hass = hass;
+
+  return element;
+}
+
 function entityName(name, onClick = null) {
   if (onClick) {
     return html`
@@ -92,14 +104,8 @@ class BannerCard extends LitElement {
 
   parseEntity(config) {
     const hass = this._hass;
-    if (!hass.states.hasOwnProperty(config.entity)) {
-      return {
-        ...config,
-        error: `Entity not ready`
-      };
-    }
     const state = hass.states[config.entity];
-    const attributes = state.attributes;
+    const attributes = state ? state.attributes : {};
 
     // Will either:
     // set .value to be the key from entities.*.map_value.{key} that matches the current `state` if the value is a string
@@ -119,11 +125,11 @@ class BannerCard extends LitElement {
 
     const data = {
       name: attributes.friendly_name,
-      state: state.state,
-      value: getAttributeOrState(state, config.attribute),
+      state: state ? state.state : "",
+      value: getAttributeOrState(state || {}, config.attribute),
       unit: attributes.unit_of_measurement,
       attributes,
-      domain: config.entity.split(".")[0]
+      domain: config.entity ? config.entity.split(".")[0] : undefined
     };
 
     if (attributes.hasOwnProperty("current_position")) {
@@ -227,6 +233,18 @@ class BannerCard extends LitElement {
             // If an attribute is requested we assume not to render
             // any domain specifics
             if (!config.attribute) {
+              if (config.type && config.type.startsWith("custom:")) {
+                const tag = config.type.split(":")[1];
+                let customStyle = "";
+
+                // make the calendar custom component look prettier
+                if (tag === "calendar-card") {
+                  customStyle = "small-text";
+                }
+
+                return this.renderCustomElement(tag, options, customStyle);
+              }
+
               switch (config.domain) {
                 case "light":
                 case "switch":
@@ -341,6 +359,26 @@ class BannerCard extends LitElement {
         </div>
       </div>
     `;
+  }
+
+  _renderCustomElement(tag, config, customStyle) {
+    return html`
+      <div class="entity-state" style="${this.grid(config.size || "full")}">
+        <div class="entity-value">
+          <div class="entity-padded ${customStyle}">
+            ${createElement(tag, config, this._hass)}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  renderCustomElement(tag, config, customStyle = "") {
+    if (customElements.get(tag)) {
+      return this._renderCustomElement(tag, config, customStyle);
+    } else {
+      console.error(tag + " doesn't exist");
+    }
   }
 
   renderAsToggle({ onClick, size, name, state, domain, entity, color }) {
