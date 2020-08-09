@@ -1,6 +1,6 @@
 {
   "name": "banner-card",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "main": "index.js",
   "author": "Raymond Julin <raymond.julin@gmail.com>",
   "description": "A fluffy banner card for Home Assistant",
