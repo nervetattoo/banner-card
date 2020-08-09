@@ -97,7 +97,7 @@ class BannerCard extends LitElement {
     this._hass = hass;
 
     // Parse new state values for _entities_
-    this.entityValues = this.entities
+    this.entityValues = (this.entities || [])
       .filter(conf => filterEntity(conf, hass.states))
       .map(conf => this.parseEntity(conf));
   }
