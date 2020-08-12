@@ -2,7 +2,7 @@ import { css } from "lit-element";
 
 export default css`
   :host {
-    --bc-font-size-heading: var(--banner-card-heading-size, 3em);
+    --bc-font-size-heading: var(--banner-card-heading-size, 2.5em);
     --bc-font-size-entity-value: var(--banner-card-entity-value-size, 1.5em);
     --bc-font-size-media-title: var(--banner-card-media-title-size, 0.9em);
     --bc-margin-heading: var(--banner-card-heading-margin, 1em);
