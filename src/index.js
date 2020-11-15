@@ -456,4 +456,14 @@ class BannerCard extends LitElement {
 
 window.customElements.define("banner-card", BannerCard);
 
+// Configure the preview in the Lovelace card picker
+window.customCards = window.customCards || [];
+window.customCards.push({
+  type: "banner-card",
+  name: "Banner Card",
+  preview: false,
+  description:
+    "The Banner card is a linkable banner with a large heading and interactive glaces of entities"
+});
+
 export default BannerCard;
