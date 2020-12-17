@@ -36,13 +36,9 @@ function createElement(tag, config, hass) {
 
 function entityName(name, onClick = null) {
   if (onClick) {
-    return html`
-      <a class="entity-name" @click=${onClick}>${name}</a>
-    `;
+    return html` <a class="entity-name" @click=${onClick}>${name}</a> `;
   }
-  return html`
-    <span class="entity-name">${name}</span>
-  `;
+  return html` <span class="entity-name">${name}</span> `;
 }
 
 class BannerCard extends LitElement {
@@ -53,7 +49,7 @@ class BannerCard extends LitElement {
       entities: Array,
       entityValues: Array,
       rowSize: Number,
-      _hass: Object
+      _hass: Object,
     };
   }
 
@@ -84,11 +80,16 @@ class BannerCard extends LitElement {
         "var(--bc-heading-color-dark)"
       );
 
-    if (typeof config.row_size !== "undefined") {
+    const rowSizeType = typeof config.row_size;
+    if (rowSizeType !== "undefined") {
       if (config.row_size < 1) {
         throw new Error("row_size must be at least 1");
       }
-      this.rowSize = config.row_size;
+      if (config.row_size === "auto") {
+        this.rowSize = this.entities.length;
+      } else {
+        this.rowSize = config.row_size;
+      }
     }
     this.rowSize = this.rowSize || 3;
   }
@@ -98,8 +99,8 @@ class BannerCard extends LitElement {
 
     // Parse new state values for _entities_
     this.entityValues = (this.entities || [])
-      .filter(conf => filterEntity(conf, hass.states))
-      .map(conf => this.parseEntity(conf));
+      .filter((conf) => filterEntity(conf, hass.states))
+      .map((conf) => this.parseEntity(conf));
   }
 
   parseEntity(config) {
@@ -129,7 +130,7 @@ class BannerCard extends LitElement {
       value: getAttributeOrState(state || {}, config.attribute),
       unit: attributes.unit_of_measurement,
       attributes,
-      domain: config.entity ? config.entity.split(".")[0] : undefined
+      domain: config.entity ? config.entity.split(".")[0] : undefined,
     };
 
     if (attributes.hasOwnProperty("current_position")) {
@@ -139,7 +140,7 @@ class BannerCard extends LitElement {
     return {
       ...data,
       ...config,
-      ...dynamicData
+      ...dynamicData,
     };
   }
 
@@ -177,15 +178,13 @@ class BannerCard extends LitElement {
     const onClick = () => this.config.link && this.navigate(this.config.link);
     return html`
       <h2 class="heading" @click=${onClick} style="color: ${this.color};">
-        ${heading.map(fragment => {
+        ${heading.map((fragment) => {
           if (isIcon(fragment)) {
             return html`
               <ha-icon class="heading-icon" .icon="${fragment}"></ha-icon>
             `;
           }
-          return html`
-            <span>${fragment}</span>
-          `;
+          return html` <span>${fragment}</span> `;
         })}
       </h2>
     `;
@@ -202,7 +201,7 @@ class BannerCard extends LitElement {
           class="entities"
           style="grid-template-columns: repeat(${this.rowSize}, 1fr);"
         >
-          ${this.entityValues.map(config => {
+          ${this.entityValues.map((config) => {
             if (config.error) {
               return html`
                 <div class="entity-state" style="${this.grid(config.size)}">
@@ -224,9 +223,9 @@ class BannerCard extends LitElement {
                   const [domain, action] = service.split(".");
                   this._hass.callService(domain, action, {
                     entity_id: config.entity,
-                    ...serviceData
+                    ...serviceData,
                   });
-                }
+                },
               });
             }
 
@@ -288,10 +287,7 @@ class BannerCard extends LitElement {
   renderDomainDefault({ value, unit, name, size, onClick, ...data }) {
     const htmlContent = this.renderValue(
       { ...data, value, click: onClick },
-      () =>
-        html`
-          ${value} ${unit}
-        `
+      () => html` ${value} ${unit} `
     );
     return html`
       <a class="entity-state" style="${this.grid(size)}" @click=${onClick}>
@@ -325,7 +321,7 @@ class BannerCard extends LitElement {
     name,
     state,
     entity,
-    domain
+    domain,
   }) {
     const isPlaying = state === "playing";
 
@@ -336,9 +332,7 @@ class BannerCard extends LitElement {
       <div class="entity-state" style="${this.grid(size || "full")}">
         ${entityName(name, onClick)}
         <div class="entity-value">
-          <div class="entity-state-left media-title">
-            ${mediaTitle}
-          </div>
+          <div class="entity-state-left media-title">${mediaTitle}</div>
           <div class="entity-state-right media-controls">
             <ha-icon-button
               icon="mdi:skip-previous"
@@ -446,7 +440,7 @@ class BannerCard extends LitElement {
     const e = new Event(type, {
       bubbles: options.bubbles === undefined ? true : options.bubbles,
       cancelable: Boolean(options.cancelable),
-      composed: options.composed === undefined ? true : options.composed
+      composed: options.composed === undefined ? true : options.composed,
     });
     e.detail = detail;
     this.dispatchEvent(e);
@@ -463,7 +457,7 @@ window.customCards.push({
   name: "Banner Card",
   preview: false,
   description:
-    "The Banner card is a linkable banner with a large heading and interactive glaces of entities"
+    "The Banner card is a linkable banner with a large heading and interactive glaces of entities",
 });
 
 export default BannerCard;
