@@ -25,6 +25,7 @@ resources:
 | Key                  | Type                 | Description                                                                                                                                                                                                 | Example                                                                                                                                          |
 | -------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
 | heading              | \_string             | array\_                                                                                                                                                                                                     | The heading to display. Set to false to hide header (**Note**: Also remember to escape!). Can also be an array, with icons.                      | `heading: "\U0001F6CB Living room"` |
+| heading_entity              | \_string             | array\_                                                                                                                                                                                                     | Entity to control on heading click. See heading entity section.                      | `heading: "\U0001F6CB Living room"` |
 | background           | _string_             | A valid CSS color to use as the background                                                                                                                                                                  | `background: "#EDE7B0"`, `background: red`                                                                                                       |
 | color                | _string_             | A valid CSS color to use as the text color                                                                                                                                                                  | `color: "#EDE7B0"`, `color: red`                                                                                                                 |
 | link                 | _string_             | A link, to a different view in HA for example                                                                                                                                                               | `link: /lovelace/living_room`                                                                                                                    |
@@ -66,6 +67,29 @@ You can combine as many texts and icons as you like this way.
   heading: [mdi:shower, Bathroom, mdi:paper-roll]
 ```
 
+### heading_entity
+You can speficy an entity and optionally a custom action to execute if the user clicks on the heading. Example:
+```yaml
+- type: custom:banner-card
+  heading: 
+    - mdi:shower
+    - Bathroom
+  heading_entity: switch.living_room
+```
+
+The example above toggles the switch `switch.living_room` on every click on the heading. As long as you don't specify a heading color, the heading color will automatically change depending on the entity state.
+
+You can also specify a custom action action as described in [Using entity action](#using-entity-action):
+```yaml
+- type: custom:banner-card
+  heading: 
+    - mdi:shower
+    - Bathroom
+  heading_entity:
+    entity: switch.living_room
+    action:
+      service: switch.turn_on
+```
 ### map_state
 
 You can use `map_state` to force a value or icon to be rendered when the entity has a certain state. It either supports a full object where you can override any key for the entity, like `value`, `name`, `unit` and so on, or a shorthand string that maps to `value`.
