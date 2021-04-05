@@ -55,15 +55,15 @@ Previously headings only allowed strings and icons were a hack using unicode emo
 Using the alternate YAML form for arrays might be more/less readable depending on your preference:
 
 ```yaml
-- type: custom:banner-card
-  heading: [mdi:shower, Bathroom]
+type: custom:banner-card
+heading: [mdi:shower, Bathroom]
 ```
 
 You can combine as many texts and icons as you like this way.
 
 ```yaml
-- type: custom:banner-card
-  heading: [mdi:shower, Bathroom, mdi:paper-roll]
+type: custom:banner-card
+heading: [mdi:shower, Bathroom, mdi:paper-roll]
 ```
 
 ### map_state
