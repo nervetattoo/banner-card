@@ -46,24 +46,24 @@ Previously headings only allowed strings and icons were a hack using unicode emo
 **From 0.10.0** you can however render icons from the mdi/hass icon sets:
 
 ```yaml
-- type: custom:banner-card
-  heading:
-    - mdi:shower
-    - Bathroom
+type: custom:banner-card
+heading:
+  - mdi:shower
+  - Bathroom
 ```
 
 Using the alternate YAML form for arrays might be more/less readable depending on your preference:
 
 ```yaml
-- type: custom:banner-card
-  heading: [mdi:shower, Bathroom]
+type: custom:banner-card
+heading: [mdi:shower, Bathroom]
 ```
 
 You can combine as many texts and icons as you like this way.
 
 ```yaml
-- type: custom:banner-card
-  heading: [mdi:shower, Bathroom, mdi:paper-roll]
+type: custom:banner-card
+heading: [mdi:shower, Bathroom, mdi:paper-roll]
 ```
 
 ### map_state
