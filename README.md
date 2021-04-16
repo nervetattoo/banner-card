@@ -8,10 +8,16 @@ A fluffy linkable banner with interactive glances to spice up your home dashboar
 
 ## Installation
 
-[`Try HACS first`](https://hacs.xyz/)
+1. Install via [HACS](https://hacs.xyz/).
+2. Add to resources:
+   ```yaml
+   url: /hacsfiles/banner-card/banner-card.js
+   type: module
+   ```
 
+<details>
+   <summary>Manual install</summary>
 1. Download the `banner-card.js` from the [latest release](https://github.com/nervetattoo/banner-card/releases/latest) and store it in your `configuration/www` folder.
-   _Previously you could download the source file from Github but starting from the 0.14 release that is no longer possible. If you try to do so it will crash_
 2. Configure Lovelace to load the card:
 
 ```yaml
@@ -20,7 +26,14 @@ resources:
     type: module
 ```
 
+</details>
+
 <a href="https://www.buymeacoffee.com/nervetattoo"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=nervetattoo&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff"></a>
+
+## Note about 1.0 release
+
+The card is rewritten in Typescript. While it should be functionally as before theres a fair chance of both new and old bugs happening.
+Also release management have been automated so its likely you will see more frequent updates in HACS from now on.
 
 ## Available configuration options:
 
