@@ -1,0 +1,18 @@
+{
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/npm",
+    [
+      "@semantic-release/github",
+      {
+        "assets": [
+          {
+            "path": "dist/banner-card.js",
+            "label": "banner-card.js"
+          }
+        ]
+      }
+    ]
+  ]
+}

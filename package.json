@@ -7,7 +7,10 @@
   "license": "MIT",
   "scripts": {
     "test": "ava",
-    "build": "NODE_ENV=production rollup -c"
+    "build": "NODE_ENV=production rollup -c",
+    "semantic-release": "semantic-release",
+    "size": "size-limit",
+    "analyze": "size-limit --why"
   },
   "dependencies": {
     "lit-element": "^2.4.0"
@@ -17,33 +20,26 @@
     "@babel/core": "^7.12.3",
     "@babel/register": "^7.12.1",
     "@rollup/plugin-commonjs": "^16.0.0",
+    "@semantic-release/github": "^7.2.1",
+    "@semantic-release/npm": "^7.1.1",
+    "@size-limit/file": "^4.10.2",
+    "@size-limit/time": "^4.10.2",
     "ava": "^3.13.0",
     "husky": "^4.3.0",
     "prettier": "^2.1.2",
     "pretty-quick": "^3.1.0",
-    "release-it": "^14.2.1",
     "rollup": "^2.33.0",
     "rollup-plugin-filesize": "^9.0.2",
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-minify-html-literals": "^1.2.5",
     "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-terser": "^7.0.2"
+    "rollup-plugin-terser": "^7.0.2",
+    "semantic-release": "^17.4.2",
+    "size-limit": "^4.10.2"
   },
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged"
-    }
-  },
-  "release-it": {
-    "github": {
-      "release": true,
-      "assets": [
-        "banner-card.*"
-      ]
-    },
-    "hooks": {
-      "before:init": "yarn build",
-      "after:release": "rm banner-card.js"
     }
   },
   "babel": {
@@ -55,5 +51,11 @@
     "require": [
       "@babel/register"
     ]
-  }
+  },
+  "size-limit": [
+    {
+      "path": "dist/banner-card.js",
+      "limit": "15 KB"
+    }
+  ]
 }
