@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "target": "es2017",
+    "declaration": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": false,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "types": ["node"],
+    "typeRoots": ["./node_modules/@types", "./typings"]
+  },
+  "include": ["./src"]
+}

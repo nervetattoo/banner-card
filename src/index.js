@@ -4,18 +4,7 @@ import { parseEntity, getAttributeOrState, readableColor } from "./utils";
 import filterEntity from "./filterEntity";
 import { name, version } from "../package.json";
 
-function printVersion(version) {
-  console.info(`%c${name}: ${version}`, "font-weight: bold");
-}
-
-printVersion(version);
-
-//
-// type: custom:banner
-// heading: 🛋 Living room
-// background: #999
-// entities:
-//   - entity: light.fibaro_system_fgd212_dimmer_2_level
+console.info(`%c${name}: ${version}`, "font-weight: bold");
 
 const ICON_REGEXP = /^(mdi|hass):/;
 function isIcon(value) {
