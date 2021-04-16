@@ -9,6 +9,8 @@
     "test": "ava",
     "build": "NODE_ENV=production rollup -c",
     "semantic-release": "semantic-release",
+    "dev": "concurrently 'npm:dev:*'",
+    "dev:build": "tsc --watch",
     "size": "size-limit",
     "analyze": "size-limit --why"
   },
@@ -28,6 +30,7 @@
     "@size-limit/file": "^4.10.2",
     "@size-limit/time": "^4.10.2",
     "ava": "^3.15.0",
+    "concurrently": "^6.0.2",
     "husky": "^4.3.0",
     "postcss": "^8.2.10",
     "postcss-preset-env": "^6.7.0",

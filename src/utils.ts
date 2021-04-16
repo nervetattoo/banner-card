@@ -11,14 +11,14 @@ export function mapObject(data, fn) {
   return Object.entries(data).reduce((result, [key, value]) => {
     return {
       ...result,
-      [key]: fn(value, key)
+      [key]: fn(value, key),
     };
   }, {});
 }
 
 export function parseEntity(entity) {
   if (typeof entity === "object") {
-    return mapObject(entity, value => {
+    return mapObject(entity, (value) => {
       return value === false ? null : value;
     });
   }
@@ -43,10 +43,10 @@ export function readableColor(hex, light, dark) {
   const rgb = [
     parseInt(hex.slice(0, 2), 16) / 255,
     parseInt(hex.slice(2, 4), 16) / 255,
-    parseInt(hex.slice(4, 6), 16) / 255
+    parseInt(hex.slice(4, 6), 16) / 255,
   ];
 
-  const [r, g, b] = rgb.map(c => {
+  const [r, g, b] = rgb.map((c) => {
     if (c <= 0.03928) {
       return c / 12.92;
     } else {

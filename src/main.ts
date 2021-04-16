@@ -1,10 +1,12 @@
-import { LitElement, html, css } from "lit-element";
+import { LitElement, html, css, property } from "lit-element";
 import styles from "./styles";
 import { parseEntity, getAttributeOrState, readableColor } from "./utils";
 import filterEntity from "./filterEntity";
-import { name, version } from "../package.json";
 
-console.info(`%c${name}: ${version}`, "font-weight: bold");
+import { CardConfig } from "./config/card";
+import fireEvent from "./fireEvent";
+
+type LooseObject = Record<string, any>;
 
 const ICON_REGEXP = /^(mdi|hass):/;
 function isIcon(value) {
@@ -30,17 +32,20 @@ function entityName(name, onClick = null) {
   return html` <span class="entity-name">${name}</span> `;
 }
 
-class BannerCard extends LitElement {
-  static get properties() {
-    return {
-      config: Object,
-      color: String,
-      entities: Array,
-      entityValues: Array,
-      rowSize: Number,
-      _hass: Object,
-    };
-  }
+export default class BannerCard extends LitElement {
+  @property()
+  config: CardConfig;
+  @property()
+  color: string;
+  @property()
+  entities: Array<any>;
+  @property()
+  entityValues: Array<any>;
+
+  @property()
+  rowSize: number;
+
+  _hass: any;
 
   static get styles() {
     return [styles];
@@ -100,7 +105,7 @@ class BannerCard extends LitElement {
     // Will either:
     // set .value to be the key from entities.*.map_value.{key} that matches the current `state` if the value is a string
     // or set all values as dynamicData if it is an object
-    const dynamicData = {};
+    const dynamicData: LooseObject = {};
     if (config.map_state && state.state in config.map_state) {
       const mappedState = config.map_state[state.state];
       const mapStateType = typeof mappedState;
@@ -133,7 +138,7 @@ class BannerCard extends LitElement {
     };
   }
 
-  grid(index = 1) {
+  grid(index: string | number = 1) {
     if (index === "full" || index > this.rowSize) {
       return `grid-column: span ${this.rowSize};`;
     }
@@ -251,13 +256,14 @@ class BannerCard extends LitElement {
     `;
   }
 
-  renderValue({ icon, value, image, action, click, color }, fallback) {
+  renderValue(data, fallback) {
+    const { icon, value, image, action, click, color } = data;
     if (icon || isIcon(value)) {
-      color = color ? `color: ${color}` : "";
+      const style = color ? `color: ${color}` : "";
       return html`
         <ha-icon
           .icon="${icon || value}"
-          style="${color}"
+          style="${style}"
           @click=${click}
         ></ha-icon>
       `;
@@ -416,37 +422,10 @@ class BannerCard extends LitElement {
 
   navigate(path) {
     history.pushState(null, "", path);
-    this.fire("location-changed", { replace: true });
+    fireEvent(this, "location-changed", { replace: true });
   }
 
   openEntityPopover(entityId) {
-    this.fire("hass-more-info", { entityId });
-  }
-
-  fire(type, detail, options) {
-    options = options || {};
-    detail = detail === null || detail === undefined ? {} : detail;
-    const e = new Event(type, {
-      bubbles: options.bubbles === undefined ? true : options.bubbles,
-      cancelable: Boolean(options.cancelable),
-      composed: options.composed === undefined ? true : options.composed,
-    });
-    e.detail = detail;
-    this.dispatchEvent(e);
-    return e;
+    fireEvent(this, "hass-more-info", { entityId });
   }
 }
-
-window.customElements.define("banner-card", BannerCard);
-
-// Configure the preview in the Lovelace card picker
-window.customCards = window.customCards || [];
-window.customCards.push({
-  type: "banner-card",
-  name: "Banner Card",
-  preview: false,
-  description:
-    "The Banner card is a linkable banner with a large heading and interactive glaces of entities",
-});
-
-export default BannerCard;

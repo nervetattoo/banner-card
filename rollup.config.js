@@ -39,7 +39,7 @@ const shared = (DEBUG) => [
 ];
 
 export default {
-  input: "src/index.js",
+  input: "src/banner-card.ts",
   output: {
     file: "dist/banner-card.js",
     format: "umd",

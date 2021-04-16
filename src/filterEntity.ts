@@ -2,7 +2,7 @@ const COMPARATORS = {
   "=": (x, y) => y.includes(x),
   ">": (x, y) => x > y[0],
   "<": (x, y) => x < y[0],
-  "!=": (x, y) => !y.includes(x)
+  "!=": (x, y) => !y.includes(x),
 };
 
 // Match _expect_ with _real_ and return true/false
@@ -41,9 +41,10 @@ function filterEntity(config, allStates) {
   if (!allStates.hasOwnProperty(config.entity)) {
     return false;
   }
-  if (config.when) {
-    const { state: expect, entity = config.entity, attributes } =
+  if (config?.when) {
+    const whenConfig =
       typeof config.when === "string" ? { state: config.when } : config.when;
+    const { state: expect, entity = config.entity, attributes } = whenConfig;
 
     // Pluck the state of the requested entity from the HASS object
     const state = allStates[entity];
