@@ -1,6 +1,6 @@
 {
   "name": "banner-card",
-  "version": "0.13.0",
+  "version": "1.0.0-development",
   "main": "index.js",
   "author": "Raymond Julin <raymond.julin@gmail.com>",
   "description": "A fluffy banner card for Home Assistant",
@@ -64,5 +64,9 @@
       "path": "dist/banner-card.js",
       "limit": "15 KB"
     }
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nervetattoo/banner-card.git"
+  }
 }
