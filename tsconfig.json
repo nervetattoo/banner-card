@@ -9,7 +9,7 @@
     "experimentalDecorators": true,
     "rootDir": "./src",
     "outDir": "./dist",
-    "types": ["node"],
+    "types": ["node", "jest"],
     "typeRoots": ["./node_modules/@types", "./typings"]
   },
   "include": ["./src"]

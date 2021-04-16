@@ -1,6 +1,9 @@
 // Helper to return an attribute if specified and present,
 // if not the value of state
-export function getAttributeOrState({ state, attributes }, attribute = false) {
+export function getAttributeOrState(
+  { state, attributes },
+  attribute: boolean | string = false
+) {
   if (typeof attribute === "string" && attributes.hasOwnProperty(attribute)) {
     return attributes[attribute];
   }
@@ -16,7 +19,7 @@ export function mapObject(data, fn) {
   }, {});
 }
 
-export function parseEntity(entity) {
+export function parseEntity(entity): Record<string, any> {
   if (typeof entity === "object") {
     return mapObject(entity, (value) => {
       return value === false ? null : value;
