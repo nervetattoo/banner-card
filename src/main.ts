@@ -1,5 +1,5 @@
 import { LitElement, html, css, property } from "lit-element";
-import styles from "./styles";
+import styles from "./styles.css";
 import { parseEntity, getAttributeOrState, readableColor } from "./utils";
 import filterEntity from "./filterEntity";
 
