@@ -35,10 +35,13 @@ function createElement(tag, config, hass) {
 }
 
 function entityName(name, onClick = null) {
+  const nameHtml = isIcon(name)
+    ? html` <ha-icon class="name-icon" .icon="${name}"></ha-icon> `
+    : name;
   if (onClick) {
-    return html` <a class="entity-name" @click=${onClick}>${name}</a> `;
+    return html` <a class="entity-name" @click=${onClick}>${nameHtml}</a> `;
   }
-  return html` <span class="entity-name">${name}</span> `;
+  return html` <span class="entity-name">${nameHtml}</span> `;
 }
 
 class BannerCard extends LitElement {
