@@ -35,9 +35,19 @@ function createElement(tag, config, hass) {
 }
 
 function entityName(name, onClick = null) {
-  const nameHtml = isIcon(name)
-    ? html` <ha-icon class="name-icon" .icon="${name}"></ha-icon> `
-    : name;
+  if (!Array.isArray(name)) {
+    name = [name];
+  }
+
+  const nameHtml = name.map((fragment) => {
+    if (isIcon(fragment)) {
+      return html`
+        <ha-icon class="heading-icon" .icon="${fragment}"></ha-icon>
+      `;
+    }
+    return html` <span>${fragment}</span> `;
+  });
+
   if (onClick) {
     return html` <a class="entity-name" @click=${onClick}>${nameHtml}</a> `;
   }
