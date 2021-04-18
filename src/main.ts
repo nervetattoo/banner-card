@@ -118,6 +118,22 @@ export default class BannerCard extends LitElement {
       }
     }
 
+    if (config.attribute) {
+      const attributeValue = attributes[config.attribute];
+
+      if (config.map_attribute && attributeValue in config.map_attribute) {
+        const mappedAttribute = config.map_attribute[attributeValue];
+        const mapAttributeType = typeof mappedAttribute;
+        if (mapAttributeType === "string") {
+          dynamicData.value = mappedAttribute;
+        } else if (mapAttributeType === "object") {
+          Object.entries(mappedAttribute).forEach(([key, val]) => {
+            dynamicData[key] = val;
+          });
+        }
+      }
+    }
+
     const data = {
       name: attributes.friendly_name,
       state: state ? state.state : "",
