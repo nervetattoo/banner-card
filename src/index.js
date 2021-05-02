@@ -255,11 +255,33 @@ class BannerCard extends LitElement {
               `;
             }
 
-            const onClick = () => this.openEntityPopover(config.entity);
+            let onClick = () => this.openEntityPopover(config.entity);
+            if (config.action && config.action.service) {
+              const { service, ...serviceData } = config.action;
+              if (service === "fire-dom-event") {
+                onClick = () => {
+                  this.fire("ll-custom", {
+                    entity_id: config.entity,
+                    ...serviceData,
+                  });
+                };
+              } else {
+                const [domain, action] = service.split(".");
+                onClick = () => {
+                  this._hass.callService(domain, action, {
+                    entity_id: config.entity,
+                    ...serviceData,
+                  });
+                };
+              }
+            }
+
             const options = { ...config, onClick };
 
             // Allow overriding rendering + action if custom is set to true
-            if (config.action) {
+            // disabled for me because i dont use it but want to override the onclick without
+            // custom rendering...
+            if (false && config.action) {
               return this.renderCustom({
                 ...options,
                 action: () => {
