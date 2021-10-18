@@ -34,11 +34,40 @@ function createElement(tag, config, hass) {
   return element;
 }
 
-function entityName(name, onClick = null) {
-  if (onClick) {
-    return html` <a class="entity-name" @click=${onClick}>${name}</a> `;
+function entityName(names, onClick = null) {
+  if (names === null) {
+    return;
   }
-  return html` <span class="entity-name">${name}</span> `;
+
+  if (!Array.isArray(names)) {
+    names = [names];
+  }
+
+  if (onClick) {
+    return html`
+      <a class="entity-name" @click=${onClick}>
+        ${names.map((name) => {
+          if (isIcon(name)) {
+            return html` <ha-icon class="entity-name" .icon="${name}">
+            </ha-icon>`;
+          }
+          return html`<span class="entity-name">${name}</span>`;
+        })}
+      </a>
+    `;
+  }
+  return html`
+    <a class="entity-name">
+      ${names.map((name) => {
+        if (isIcon(name)) {
+          return html`
+            <ha-icon class="entity-name" .icon="${name}"> </ha-icon>
+          `;
+        }
+        return html` <span class="entity-name">${name}</span> `;
+      })}
+    </a>
+  `;
 }
 
 class BannerCard extends LitElement {
@@ -253,8 +282,6 @@ class BannerCard extends LitElement {
                   return this.renderDomainCover(options);
                 case "media_player":
                   return this.renderDomainMediaPlayer(options);
-                case "camera":
-                  return this.renderDomainCamera(options);
               }
             }
             return this.renderDomainDefault(options);
@@ -351,36 +378,6 @@ class BannerCard extends LitElement {
               role="button"
               @click=${this._service(domain, "media_next_track", entity)}
             ></ha-icon-button>
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  renderDomainCamera({
-    onClick,
-    attributes: a,
-    size,
-    name,
-    state,
-    entity,
-    domain,
-  }) {
-    return html`
-      <div class="entity-state" style="${this.grid(size || "full")}">
-        ${entityName(name, onClick)}
-        <div class="entity-value">
-          <div class="entity-padded">
-            <ha-card>
-              <hui-image
-                .hass=${this._hass}
-                .cameraImage=${entity}
-                .cameraView=${a.camera_view || "live"}
-                .entity=${entity}
-                @click=${onClick}
-              >
-              </hui-image>
-            </ha-card>
           </div>
         </div>
       </div>
