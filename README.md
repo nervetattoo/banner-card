@@ -34,7 +34,7 @@ resources:
 | row_size             | \_number             | string\_                                                                                                                                                                                                    | Number of columns in the grid. 3 is the default and what looks best _in many cases_. Set "auto" to equal row_size to number of entities provided | `row_size: 4` |
 | entities[].entity    | _string_             | Entity id                                                                                                                                                                                                   | `- entity: binary_sensor.remote_ui`                                                                                                              |
 | entities[].unit      | _string_ or _false_  | Override the automatic unit                                                                                                                                                                                 | `unit: My unit`                                                                                                                                  |
-| entities[].name      | _string_             | Override the automatic usage of friendly_name                                                                                                                                                               | `name: A sensor`                                                                                                                                 |
+| entities[].name      | _array_             | Override the automatic usage of friendly_name                                                                                                                                                               | `name: A sensor` or<br />`name:`<br />&nbsp;&nbsp;&nbsp;&nbsp;`- mdi:thermometer`<br />&nbsp;&nbsp;&nbsp;&nbsp;`- Sensor`                                                                                                                                 |
 | entities[].map_state | _object_             | Map state values to resulting text or icons. A string prefixed with mdi: or hass: will yield a rendered icon.                                                                                               | map_state:<br /> home: mdi:home-account<br /> not_home: mdi:walk                                                                                 |
 | entities[].attribute | _string_             | Display an attribute instead of the state                                                                                                                                                                   |                                                                                                                                                  |
 | entities[].size      | _number_             | Override how many "entity cells" this entity will fill. The default for most entities is 1 cell, except if you include a media_player which will use whatever is the value for `row_size`, thus full width. |                                                                                                                                                  |
@@ -197,4 +197,22 @@ entities:
     name: Temperature
   - entity: sensor.aeotec_zw100_multisensor_6_relative_humidity_5
     name: Humidity
+```
+
+```yaml
+type: custom:banner-card
+heading:
+  - mdi:counter-top
+  - Kitchen
+background: "#B0C2ED"
+link: /lovelace/kitchen
+entities:
+  - entity: light.kitchen_downlighters
+    name:
+      - mdi:ceiling-light-multiple
+      - Lights
+  - entity: sensor.kitchen_temperature
+    name: mdi:thermometer-lines
+  - entity: sensor.kitchen_humidity
+    name: mdi:water-percent
 ```
