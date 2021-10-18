@@ -1,4 +1,5 @@
 {
-  "homeassistant": "0.100.0",
-  "render_readme": true
+  "name": "Banner Card",
+  "render_readme": true,
+  "filename": "banner-card.js"
 }
