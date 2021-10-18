@@ -14,6 +14,7 @@ export default css`
     );
     --bc-heading-color-light: var(--banner-card-heading-color-light, #fff);
   }
+
   ha-card {
     display: flex;
     flex-direction: column;
@@ -112,6 +113,12 @@ export default css`
     white-space: nowrap;
     padding-top: calc(var(--bc-spacing) * 2);
     padding-bottom: calc(var(--bc-spacing) * 2);
+  }
+
+  .entity-name ha-icon {
+    --iron-icon-width: 1em;
+    --iron-icon-height: 1em;
+    margin: 0 var(--bc-spacing);
   }
 
   .entity-value {
