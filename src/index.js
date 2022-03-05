@@ -301,9 +301,9 @@ class BannerCard extends LitElement {
     const htmlContent = this.renderValue(
       { ...data, value, unit, click: action },
       () => html`
-        <mwc-button ?dense=${true} @click=${action}>
+        <ha-button ?dense=${true} @click=${action}>
           ${value} ${unit}
-        </mwc-button>
+        </ha-button>
       `
     );
     return html`
@@ -381,12 +381,12 @@ class BannerCard extends LitElement {
       <div class="entity-state" style="${this.grid(size)}">
         ${entityName(name, onClick)}
         <span class="entity-value">
-          <mwc-switch
+          <ha-switch
             style="--mdc-theme-secondary: ${color};"
             ?checked=${state === "on"}
             @click=${this._service(domain, "toggle", entity)}
           >
-          </mwc-switch>
+          </ha-switch>
         </span>
       </div>
     `;

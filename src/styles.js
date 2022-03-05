@@ -134,10 +134,10 @@ export default css`
     color: white;
   }
 
-  mwc-button {
+  ha-button {
     --mdc-theme-primary: white;
   }
-  mwc-switch {
+  ha-switch {
     --mdc-theme-secondary: white;
   }
 `;
