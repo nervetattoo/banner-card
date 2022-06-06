@@ -130,7 +130,7 @@ export default css`
     width: 90%;
   }
 
-  .entity-value ha-icon {
+  .entity-value ha-icon:not([disabled]) {
     color: white;
   }
 

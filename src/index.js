@@ -338,16 +338,19 @@ class BannerCard extends LitElement {
               icon="mdi:skip-previous"
               role="button"
               @click=${this._service(domain, "media_previous_track", entity)}
+              ><ha-icon icon="mdi:skip-previous"></ha-icon
             ></ha-icon-button>
             <ha-icon-button
               icon="${isPlaying ? "mdi:stop" : "mdi:play"}"
               role="button"
               @click=${this._service(domain, action, entity)}
+              ><ha-icon icon="${isPlaying ? "mdi:stop" : "mdi:play"}"></ha-icon
             ></ha-icon-button>
             <ha-icon-button
               icon="mdi:skip-next"
               role="button"
               @click=${this._service(domain, "media_next_track", entity)}
+              ><ha-icon icon="mdi:skip-next"></ha-icon
             ></ha-icon-button>
           </div>
         </div>
@@ -404,17 +407,20 @@ class BannerCard extends LitElement {
             icon="hass:arrow-up"
             role="button"
             @click=${this._service("cover", "open_cover", entity)}
+            ><ha-icon ?disabled=${isopen} icon="hass:arrow-up"></ha-icon
           ></ha-icon-button>
           <ha-icon-button
             icon="hass:stop"
             role="button"
             @click=${this._service("cover", "stop_cover", entity)}
+            ><ha-icon icon="hass:stop"></ha-icon
           ></ha-icon-button>
           <ha-icon-button
             ?disabled=${isclosed}
             icon="hass:arrow-down"
             role="button"
             @click=${this._service("cover", "close_cover", entity)}
+            ><ha-icon ?disabled=${isclosed} icon="hass:arrow-down"></ha-icon
           ></ha-icon-button>
         </span>
       </div>
