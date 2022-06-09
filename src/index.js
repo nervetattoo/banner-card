@@ -60,6 +60,7 @@ class BannerCard extends LitElement {
   constructor() {
     super();
     this.config = {};
+    this.heading_entity = {};
     this.entities = [];
     this._hass = {};
   }
@@ -79,6 +80,9 @@ class BannerCard extends LitElement {
         "var(--bc-heading-color-light)",
         "var(--bc-heading-color-dark)"
       );
+    
+    this.headerNotActiveColor = this.color;
+    this.headerActiveColor = `var(--paper-item-icon-active-color, ${this.color.match(/(var\(.+\))|(.+)/)[1]})`;
 
     const rowSizeType = typeof config.row_size;
     if (rowSizeType !== "undefined") {
@@ -101,6 +105,26 @@ class BannerCard extends LitElement {
     this.entityValues = (this.entities || [])
       .filter((conf) => filterEntity(conf, hass.states))
       .map((conf) => this.parseEntity(conf));
+
+    if (this.config.heading_entity) {
+      if (typeof this.config.heading_entity === "string") {
+        this.heading_entity = this.parseEntity({
+          entity: this.config.heading_entity
+        });
+      } else {
+        this.heading_entity = this.parseEntity(this.config.heading_entity);
+      }
+
+      if (!this.config.color && this.color) {
+        // no user defined color specified BUT a heading entity
+        //   -> colorize the heading depending on the heading entity state
+        if (this.heading_entity.state === "on") {
+          this.color = this.headerActiveColor;
+        } else {
+          this.color = this.headerNotActiveColor;
+        }
+      }
+    }
   }
 
   parseEntity(config) {
@@ -175,7 +199,27 @@ class BannerCard extends LitElement {
       heading = [heading];
     }
 
-    const onClick = () => this.config.link && this.navigate(this.config.link);
+    const onClick = () => {
+      if (this.config.link) {
+        this.navigate(this.config.link);
+      } else if (this.heading_entity.entity) {
+        if (this.heading_entity.action) {
+          const { service, ...serviceData } = this.heading_entity.action;
+          const [domain, action] = service.split(".");
+          this._hass.callService(domain, action, {
+            entity_id: this.heading_entity.entity,
+            ...serviceData,
+          });
+        } else {
+          this._hass.callService(
+            this.heading_entity.domain,
+            "toggle",
+            { entity_id: this.heading_entity.entity }
+          );
+        }
+      }
+    };
+
     return html`
       <h2 class="heading" @click=${onClick} style="color: ${this.color};">
         ${heading.map((fragment) => {
