@@ -35,10 +35,23 @@ function createElement(tag, config, hass) {
 }
 
 function entityName(name, onClick = null) {
-  if (onClick) {
-    return html` <a class="entity-name" @click=${onClick}>${name}</a> `;
+  if (!Array.isArray(name)) {
+    name = [name];
   }
-  return html` <span class="entity-name">${name}</span> `;
+
+  const nameHtml = name.map((fragment) => {
+    if (isIcon(fragment)) {
+      return html`
+        <ha-icon class="heading-icon" .icon="${fragment}"></ha-icon>
+      `;
+    }
+    return html` <span>${fragment}</span> `;
+  });
+
+  if (onClick) {
+    return html` <a class="entity-name" @click=${onClick}>${nameHtml}</a> `;
+  }
+  return html` <span class="entity-name">${nameHtml}</span> `;
 }
 
 class BannerCard extends LitElement {
