@@ -253,6 +253,8 @@ class BannerCard extends LitElement {
                   return this.renderDomainCover(options);
                 case "media_player":
                   return this.renderDomainMediaPlayer(options);
+                case "climate":
+                  return this.renderDomainClimate(options);
               }
             }
             return this.renderDomainDefault(options);
@@ -416,6 +418,45 @@ class BannerCard extends LitElement {
             role="button"
             @click=${this._service("cover", "close_cover", entity)}
           ></ha-icon-button>
+        </span>
+      </div>
+    `;
+  }
+  
+  renderDomainClimate(options) {
+    let entity_id = options.entity.split(".")[1];
+    let thermostatTemperature = options.attributes.temperature;
+    let callClimateService = (options) => {
+      this._hass.callService("climate", "set_temperature", { "entity_id": options.entity, "temperature": options.attributes.temperature });
+    };
+    let onThermostatArrowClick = (diff) => {
+      clearTimeout(this._updateThermostateTemperatureTimeout);
+      options.attributes.temperature += diff;
+      this.hass = this._hass;
+      this._updateThermostateTemperatureTimeout = setTimeout(callClimateService, 3000, options);
+    };
+    let onThermostatArrowUpClick = () => {
+      onThermostatArrowClick(0.5);
+    };
+    let onThermostatArrowDownClick = () => {
+      onThermostatArrowClick(-0.5);
+    };
+    return html`
+      <div class="entity-state" style="${this.grid(options.size)}">
+        <span class="entity-name">${options.name}</span>
+        <span class="entity-value ${entity_id}_editor">
+          <paper-icon-button
+            icon="hass:arrow-up"
+            role="button"
+            @click=${onThermostatArrowUpClick}
+          ></paper-icon-button>
+          <span class="${entity_id}_value">${thermostatTemperature.toFixed(1)}</span>
+          <paper-icon-button
+            icon="hass:arrow-down"
+            role="button"
+            @click=${onThermostatArrowDownClick}
+          ></paper-icon-button>
+        </span>
         </span>
       </div>
     `;
